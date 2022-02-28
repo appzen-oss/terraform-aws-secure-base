@@ -1,5 +1,7 @@
 # terraform-aws-secure-base
 
+[![Releases](https://img.shields.io/github/v/release/appzen-oss/terraform-aws-secure-base)](https://github.com/appzen-oss/terraform-aws-secure-base/releases/tag/latest)
+
 [Terraform Module Registry](https://registry.terraform.io/modules/appzen-oss/secure-base/aws)
 
 A terraform module to set up an AWS multi-account, multi-region organization
