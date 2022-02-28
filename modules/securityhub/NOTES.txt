@@ -1,0 +1,29 @@
+
+Workshop
+https://security-hub-workshop.awssecworkshops.com/?pg=rs&sec=doc
+
+https://docs.aws.amazon.com/securityhub/latest/userguide/securityhub-partner-providers.html
+
+kube-bench
+Product ARN: arn:aws:securityhub:<REGION>::product/aqua-security/kube-bench
+https://github.com/aquasecurity/kube-bench
+https://github.com/aquasecurity/kube-bench/blob/main/docs/running.md#running-in-an-eks-cluster
+https://github.com/aquasecurity/kube-bench/blob/main/docs/flags-and-commands.md
+--asff
+https://github.com/aquasecurity/kube-bench/blob/main/docs/asff.md
+
+cloud custodian
+Product ARN: arn:aws:securityhub:<REGION>::product/cloud-custodian/cloud-custodian
+https://cloudcustodian.io/docs/aws/topics/securityhub.html
+
+prowler
+Product ARN: arn:aws:securityhub:<REGION>::product/prowler/prowler
+https://github.com/prowler-cloud/prowler#security-hub-integration
+
+slack (custom)
+https://github.com/aws-samples/aws-securityhub-to-slack
+securityhub -> events -> lambda -> slack
+
+trivy (custom)
+https://aws.amazon.com/blogs/security/how-to-build-ci-cd-pipeline-container-vulnerability-scanning-trivy-and-aws-security-hub/
+https://github.com/aws-samples/aws-security-hub-scan-with-trivy/blob/master/sechub_parser.py

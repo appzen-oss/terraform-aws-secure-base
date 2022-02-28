@@ -1,0 +1,39 @@
+# See http://pre-commit.com for more information
+# See http://pre-commit.com/hooks.html for more hooks
+# To update to all latest tagged versions run:
+#     pre-commit autoupdate
+# Manually run all hooks
+#     pre-commit run -a
+# Install tools on mac
+# brew install pre-commit gawk terraform-docs tflint tfsec coreutils checkov terrascan shellcheck
+# npm install -g markdown-link-check
+repos:
+- repo: git://github.com/antonbabenko/pre-commit-terraform
+  rev: v1.64.0
+  hooks:
+    - id: terraform_fmt
+    - id: terraform_docs
+    - id: terraform_validate
+    - id: terraform_tflint
+    - id: terraform_tfsec
+    - id: checkov
+    - id: terrascan
+- repo: https://github.com/pre-commit/pre-commit-hooks
+  rev: v4.1.0
+  hooks:
+    - id: check-case-conflict
+    - id: check-executables-have-shebangs
+    - id: check-json
+    - id: check-merge-conflict
+    - id: check-yaml
+    - id: detect-aws-credentials
+    - id: detect-private-key
+    - id: end-of-file-fixer
+    - id: mixed-line-ending
+      args: [--fix=lf]
+    - id: trailing-whitespace
+- repo: https://github.com/gruntwork-io/pre-commit
+  rev: v0.1.17
+  hooks:
+    - id: shellcheck
+    #- id: markdown-link-check
