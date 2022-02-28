@@ -1,3 +1,24 @@
+# terraform-aws-secure-base
+
+[Terraform Module Registry](https://registry.terraform.io/modules/appzen-oss/secure-base/aws)
+
+A terraform module to set up an AWS multi-account, multi-region organization
+with account/region security setting and security services.
+
+## Features
+
+## Usage
+
+
+## Submodules
+
+This module is composed of several submodules and each of which can be used independently.
+
+- [submodules](./modules/)
+
+## Examples
+
+- [examples](./examples)
 
 <!-- BEGINNING OF PRE-COMMIT-TERRAFORM DOCS HOOK -->
 ## Requirements
