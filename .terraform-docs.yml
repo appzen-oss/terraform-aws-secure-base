@@ -1,4 +1,4 @@
 formatter: markdown
-settings:
-  anchor: false
-  html: false
+#settings:
+#  anchor: false
+#  html: false

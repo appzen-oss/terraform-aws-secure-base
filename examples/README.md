@@ -1,6 +1,6 @@
 # Examples
 
-- [Organization Master](./master)
-- [Security Administrator](./administrator)
-- [Logs](./logs)
-- [Member](./member)
+- [Organization Master account](./master)
+- [Security Administrator account](./administrator)
+- [Logs account](./logs)
+- [Member account](./member)
