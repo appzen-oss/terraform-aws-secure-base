@@ -1,9 +1,4 @@
 
-variable "aws_profile" {
-  description = "AWS credential profile"
-  type        = string
-}
-
 variable "enable" {
   description = "Enable managing S3 buckets"
   type        = bool

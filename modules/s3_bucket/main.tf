@@ -7,7 +7,7 @@ locals {
 module "label" {
   source      = "cloudposse/label/null"
   version     = "0.25.0"
-  namespace   = var.aws_profile
+  namespace   = data.aws_iam_account_alias.current.account_alias
   name        = "infra"
   attributes  = [data.aws_region.current.name]
   label_order = ["namespace", "name", "attributes"]
@@ -19,8 +19,15 @@ module "label" {
   }
 }
 
-#tfsec:ignore:AWS002
-#tfsec:ignore:AWS098
+#tfsec:ignore:aws-s3-block-public-acls
+#tfsec:ignore:aws-s3-block-public-policy
+#tfsec:ignore:aws-s3-enable-bucket-encryption
+#tfsec:ignore:aws-s3-enable-bucket-logging
+#tfsec:ignore:aws-s3-enable-versioning
+#tfsec:ignore:aws-s3-encryption-customer-key
+#tfsec:ignore:aws-s3-ignore-public-acls
+#tfsec:ignore:aws-s3-no-public-buckets
+#tfsec:ignore:aws-s3-specify-public-access-block
 resource "aws_s3_bucket" "self" {
   #checkov:skip=CKV_AWS_18:Consider logging in future
   #checkov:skip=CKV_AWS_19:Require encryption. Not working?

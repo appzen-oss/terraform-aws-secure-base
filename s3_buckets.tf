@@ -39,7 +39,6 @@
 module "s3_bucket-us-east-1" {
   source                      = "./modules/s3_bucket"
   enable                      = var.enable_s3_buckets && contains(var.target_regions, "us-east-1")
-  aws_profile                 = var.aws_profile
   bucket_custom_policy_json   = var.bucket_custom_policy_json
   cloudtrail_s3_key_prefix    = var.cloudtrail_s3_key_prefix
   config_s3_bucket_key_prefix = var.config_s3_bucket_key_prefix

@@ -10,13 +10,10 @@ variable "account_type" {
     error_message = "Must be one of: master, administrator, member."
   }
 }
-variable "aws_profile" {
-  description = "AWS credential profile"
-  type        = string
-}
 
 variable "aws_region" {
   description = "The AWS region in which global resources are set up."
+  type        = string
   default     = "us-east-1"
 }
 
@@ -93,6 +90,7 @@ variable "security_administrator_account_id" {
 
 variable "tags" {
   description = "Specifies object tags key and value. This applies to all resources created by this module."
+  type        = map(any)
   default = {
     "Environment" = "infra"
     "Product"     = "security"
@@ -103,6 +101,7 @@ variable "tags" {
 
 variable "target_regions" {
   description = "A list of regions to set up with this module."
+  type        = list(string)
   default = [
     "eu-west-1",
     "us-east-1",
@@ -148,6 +147,7 @@ variable "ecr_scan_type" {
 ### -----------------------------
 variable "enable_ebs_baseline" {
   description = "Boolean whether iam-baseline is enabled."
+  type        = bool
   default     = true
 }
 ### -----------------------------
@@ -155,6 +155,7 @@ variable "enable_ebs_baseline" {
 ### -----------------------------
 variable "enable_iam_baseline" {
   description = "Boolean whether iam-baseline is enabled."
+  type        = bool
   default     = true
 }
 
@@ -219,41 +220,49 @@ variable "iam_create_password_policy" {
 
 variable "iam_max_password_age" {
   description = "The number of days that an user password is valid."
+  type        = number
   default     = 0
 }
 
 variable "iam_minimum_password_length" {
   description = "Minimum length to require for user passwords."
+  type        = number
   default     = 14
 }
 
 variable "iam_password_reuse_prevention" {
   description = "The number of previous passwords that users are prevented from reusing."
+  type        = number
   default     = 24
 }
 
 variable "iam_require_lowercase_characters" {
   description = "Whether to require lowercase characters for user passwords."
+  type        = bool
   default     = true
 }
 
 variable "iam_require_numbers" {
   description = "Whether to require numbers for user passwords."
+  type        = bool
   default     = true
 }
 
 variable "iam_require_uppercase_characters" {
   description = "Whether to require uppercase characters for user passwords."
+  type        = bool
   default     = true
 }
 
 variable "iam_require_symbols" {
   description = "Whether to require symbols for user passwords."
+  type        = bool
   default     = true
 }
 
 variable "iam_allow_users_to_change_password" {
   description = "Whether to allow users to change their own password."
+  type        = bool
   default     = true
 }
 
@@ -262,26 +271,31 @@ variable "iam_allow_users_to_change_password" {
 ### -----------------------------
 variable "enable_s3_baseline" {
   description = "Enable S3 baseline?"
+  type        = bool
   default     = true
 }
 
 variable "s3_block_public_acls" {
   description = "Whether Amazon S3 should block public ACLs for buckets in this account. Defaults to true."
+  type        = bool
   default     = true
 }
 
 variable "s3_block_public_policy" {
   description = "Whether Amazon S3 should block public bucket policies for buckets in this account. Defaults to true."
+  type        = bool
   default     = true
 }
 
 variable "s3_ignore_public_acls" {
   description = "Whether Amazon S3 should ignore public ACLs for buckets in this account. Defaults to true."
+  type        = bool
   default     = true
 }
 
 variable "s3_restrict_public_buckets" {
   description = "Whether Amazon S3 should restrict public bucket policies for buckets in this account. Defaults to true."
+  type        = bool
   default     = true
 }
 
