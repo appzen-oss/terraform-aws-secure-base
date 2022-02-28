@@ -3,6 +3,7 @@
 
 module "iam_access_analyzer-us-east-1" {
   source     = "./modules/iam_access_analyzer"
+  count      = var.enable_iam_access_analyzer && contains(var.target_regions, "us-east-1") ? 1 : 0
   depends_on = [aws_organizations_organization.self]
   enable     = var.enable_iam_access_analyzer && contains(var.target_regions, "us-east-1")
   providers = {
@@ -13,6 +14,7 @@ module "iam_access_analyzer-us-east-1" {
 
 module "iam_access_analyzer-us-east-2" {
   source     = "./modules/iam_access_analyzer"
+  count      = var.enable_iam_access_analyzer && contains(var.target_regions, "us-east-2") ? 1 : 0
   depends_on = [aws_organizations_organization.self]
   enable     = var.enable_iam_access_analyzer && contains(var.target_regions, "us-east-2")
   providers = {
@@ -23,6 +25,7 @@ module "iam_access_analyzer-us-east-2" {
 
 module "iam_access_analyzer-eu-west-1" {
   source     = "./modules/iam_access_analyzer"
+  count      = var.enable_iam_access_analyzer && contains(var.target_regions, "eu-west-1") ? 1 : 0
   depends_on = [aws_organizations_organization.self]
   enable     = var.enable_iam_access_analyzer && contains(var.target_regions, "eu-west-1")
   providers = {

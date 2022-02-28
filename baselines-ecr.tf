@@ -5,6 +5,7 @@
 
 module "baseline_ecr_eu-west-1" {
   source = "./modules/baseline_ecr"
+  count  = contains(var.target_regions, "eu-west-1") && var.enable_ecr_baseline ? 1 : 0
   providers = {
     aws = aws.eu-west-1
   }
@@ -15,6 +16,7 @@ module "baseline_ecr_eu-west-1" {
 
 module "baseline_ecr_us-east-1" {
   source = "./modules/baseline_ecr"
+  count  = contains(var.target_regions, "us-east-1") && var.enable_ecr_baseline ? 1 : 0
   providers = {
     aws = aws.us-east-1
   }
@@ -25,6 +27,7 @@ module "baseline_ecr_us-east-1" {
 
 module "baseline_ecr_us-east-2" {
   source = "./modules/baseline_ecr"
+  count  = contains(var.target_regions, "us-east-2") && var.enable_ecr_baseline ? 1 : 0
   providers = {
     aws = aws.us-east-2
   }

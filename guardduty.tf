@@ -2,6 +2,7 @@
 
 module "guardduty-us-east-1" {
   source     = "./modules/guardduty"
+  count      = var.enable_guardduty && contains(var.target_regions, "us-east-1") ? 1 : 0
   depends_on = [aws_organizations_organization.self]
   enable     = var.enable_guardduty && contains(var.target_regions, "us-east-1")
   providers = {
@@ -13,6 +14,7 @@ module "guardduty-us-east-1" {
 
 module "guardduty-us-east-2" {
   source     = "./modules/guardduty"
+  count      = var.enable_guardduty && contains(var.target_regions, "us-east-2") ? 1 : 0
   depends_on = [aws_organizations_organization.self]
   enable     = var.enable_guardduty && contains(var.target_regions, "us-east-2")
   providers = {
@@ -24,6 +26,7 @@ module "guardduty-us-east-2" {
 
 module "guardduty-eu-west-1" {
   source     = "./modules/guardduty"
+  count      = var.enable_guardduty && contains(var.target_regions, "eu-west-1") ? 1 : 0
   depends_on = [aws_organizations_organization.self]
   enable     = var.enable_guardduty && contains(var.target_regions, "eu-west-1")
   providers = {

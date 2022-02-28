@@ -11,6 +11,7 @@
 # --------------------------------------------------------------------------------------------------
 module "baseline_iam" {
   source = "./modules/baseline_iam"
+  count  = var.enable_iam_baseline ? 1 : 0
   enable = var.enable_iam_baseline
   #support_iam_role_name           = var.iam_support_iam_role_name
   #support_iam_role_policy_name    = var.iam_support_iam_role_policy_name
@@ -33,6 +34,7 @@ module "baseline_iam" {
 # --------------------------------------------------------------------------------------------------
 module "baseline_s3" {
   source                  = "./modules/baseline_s3"
+  count                   = var.enable_s3_baseline ? 1 : 0
   enable                  = var.enable_s3_baseline
   block_public_acls       = var.s3_block_public_acls
   block_public_policy     = var.s3_block_public_policy
