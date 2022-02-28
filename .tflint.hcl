@@ -13,6 +13,9 @@ rule "terraform_documented_outputs" {
 rule "terraform_documented_variables" {
   enabled = true
 }
+rule "terraform_typed_variables" {
+  enabled = true
+}
 rule "terraform_unused_declarations" {
   enabled = true
 }
