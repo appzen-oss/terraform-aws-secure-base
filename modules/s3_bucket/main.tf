@@ -47,13 +47,13 @@ resource "aws_s3_bucket" "self" {
   #}
 }
 
-resource "aws_s3_bucket_acl" "self" {
-  count      = var.enable ? 1 : 0
-  depends_on = [aws_s3_bucket.self]
-  bucket     = aws_s3_bucket.self[0].id
-  acl        = "private"
-  #expected_bucket_owner =
-}
+#resource "aws_s3_bucket_acl" "self" {
+#  count      = var.enable ? 1 : 0
+#  depends_on = [aws_s3_bucket.self]
+#  bucket     = aws_s3_bucket.self[0].id
+#  acl        = "private"
+#  #expected_bucket_owner =
+#}
 #dynamic "grant" {
 #  for_each = try(length(var.grants), 0) == 0 || try(length(var.acl), 0) > 0 ? [] : var.grants
 #  content {
