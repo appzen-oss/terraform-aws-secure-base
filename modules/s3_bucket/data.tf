@@ -383,9 +383,9 @@ data "aws_iam_policy_document" "s3_flow_logs" {
 #}
 
 data "aws_iam_policy_document" "aggregated_policy" {
-  count                     = local.enable
-  source_policy_documents   = [join("", data.aws_iam_policy_document.s3_flow_logs.*.json)]
-  override_policy_documents = [var.bucket_custom_policy_json]
+  count                   = local.enable
+  source_policy_documents = [join("", data.aws_iam_policy_document.s3_flow_logs.*.json)]
+  #override_policy_documents = [var.bucket_custom_policy_json]
 }
 
 resource "aws_s3_bucket_policy" "default" {
