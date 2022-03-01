@@ -3,7 +3,6 @@
 ## Features
 
 - Set up IAM Password Policy.
-- Create default IAM roles for managing AWS account.
 
 <!-- BEGINNING OF PRE-COMMIT-TERRAFORM DOCS HOOK -->
 ## Requirements

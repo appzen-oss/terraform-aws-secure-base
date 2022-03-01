@@ -14,13 +14,13 @@ with account/region security setting and security services.
 
 ## Submodules
 
-This module is composed of several submodules and each of which can be used independently.
+This module is composed of several submodules, all of which can be used independently.
 
 - [submodules](./modules/)
 
 ## Examples
 
-- [examples](./examples)
+- [examples](./examples/)
 
 <!-- BEGINNING OF PRE-COMMIT-TERRAFORM DOCS HOOK -->
 ## Requirements

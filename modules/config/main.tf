@@ -123,6 +123,7 @@ resource "aws_config_configuration_aggregator" "organization" {
 
 ### SNS
 # Flesh out. Look at cloudposse/sns-topic/aws"
+#tfsec:ignore:aws-sns-enable-topic-encryption
 resource "aws_sns_topic" "config" {
   #checkov:skip=CKV_AWS_26:Allow unencrypted SNS for now
   count             = var.enable ? 1 : 0

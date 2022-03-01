@@ -1,5 +1,9 @@
 # AWS CloudTrail
 
+## Features
+
+- Enable CloudTrail regions and deliver events to S3
+
 <!-- BEGINNING OF PRE-COMMIT-TERRAFORM DOCS HOOK -->
 ## Requirements
 

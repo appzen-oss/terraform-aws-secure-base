@@ -1,5 +1,9 @@
 # AWS GuardDuty
 
+## Features
+
+- Enable GuardDuty
+
 <!-- BEGINNING OF PRE-COMMIT-TERRAFORM DOCS HOOK -->
 ## Requirements
 

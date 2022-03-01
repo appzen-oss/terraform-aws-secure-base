@@ -2,7 +2,7 @@
 
 ## Features
 
-- Enable EBS encryption by default.
+- Enable EBS encryption by default
 
 <!-- BEGINNING OF PRE-COMMIT-TERRAFORM DOCS HOOK -->
 ## Requirements

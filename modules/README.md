@@ -1,7 +1,8 @@
+# submodules
 
 All modules are designed to work in a multi-account organization and to delegate administration to an administrator account (if supported by AWS)
 
-AWS resources that have account or regional security settings
+## AWS resources that have account or regional security settings
 
 | Resource/Service | Supported | Setting |
 | :--------------- | :--: | :---- |
@@ -11,14 +12,14 @@ AWS resources that have account or regional security settings
 | [iam](./baseline_iam)      | yes  | password policy |
 | [s3](./baseline_s3)        | yes  | public access |
 
-AWS services required by Security Hub
+## AWS services required by [Security Hub](./securityhub)
 
 | Resource/Service | Supported | Setting |
 | :--------------- | :--: | :---- |
 | [config](./config)        | | setup |
 | [s3 buckets](./s3_bucket) | | |
 
-AWS services that integrate with Security Hub
+## AWS services that integrate with [Security Hub](./securityhub)
 
 | Service           | Supported |
 | :---------------- | :-------: |

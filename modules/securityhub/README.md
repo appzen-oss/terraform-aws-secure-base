@@ -1,5 +1,12 @@
 # AWS Security Hub
 
+## Features
+
+- Enable Security Hub
+- Delegate management to administrator account
+- Subscribe to standards
+- Subscribe to 3rd party products (optional)
+
 <!-- BEGINNING OF PRE-COMMIT-TERRAFORM DOCS HOOK -->
 ## Requirements
 

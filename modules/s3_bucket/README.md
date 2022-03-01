@@ -1,4 +1,8 @@
-# Create secure S3 bucket in one region for AWS services
+# s3_bucket
+
+## Features
+
+- Create secure S3 bucket for AWS services
 
 <!-- BEGINNING OF PRE-COMMIT-TERRAFORM DOCS HOOK -->
 ## Requirements

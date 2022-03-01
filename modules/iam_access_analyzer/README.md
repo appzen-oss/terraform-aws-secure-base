@@ -1,5 +1,9 @@
 # AWS Access Analyzer
 
+## Features
+
+- Enable IAM Access Analyzer
+
 <!-- BEGINNING OF PRE-COMMIT-TERRAFORM DOCS HOOK -->
 ## Requirements
 

@@ -1,5 +1,9 @@
 # AWS Config
 
+## Features
+
+- Enable AWS Config
+
 <!-- BEGINNING OF PRE-COMMIT-TERRAFORM DOCS HOOK -->
 ## Requirements
 

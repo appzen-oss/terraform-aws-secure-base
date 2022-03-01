@@ -2,7 +2,7 @@
 
 ## Features
 
-- Enable S3 account-level Public Access Block configuration.
+- Enable S3 account-level Public Access Block configuration
 
 <!-- BEGINNING OF PRE-COMMIT-TERRAFORM DOCS HOOK -->
 ## Requirements
