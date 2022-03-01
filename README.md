@@ -61,7 +61,9 @@ This module is composed of several submodules, all of which can be used independ
 | <a name="module_iam_access_analyzer-eu-west-1"></a> [iam\_access\_analyzer-eu-west-1](#module\_iam\_access\_analyzer-eu-west-1) | ./modules/iam_access_analyzer | n/a |
 | <a name="module_iam_access_analyzer-us-east-1"></a> [iam\_access\_analyzer-us-east-1](#module\_iam\_access\_analyzer-us-east-1) | ./modules/iam_access_analyzer | n/a |
 | <a name="module_iam_access_analyzer-us-east-2"></a> [iam\_access\_analyzer-us-east-2](#module\_iam\_access\_analyzer-us-east-2) | ./modules/iam_access_analyzer | n/a |
+| <a name="module_s3_bucket-eu-west-1"></a> [s3\_bucket-eu-west-1](#module\_s3\_bucket-eu-west-1) | ./modules/s3_bucket | n/a |
 | <a name="module_s3_bucket-us-east-1"></a> [s3\_bucket-us-east-1](#module\_s3\_bucket-us-east-1) | ./modules/s3_bucket | n/a |
+| <a name="module_s3_bucket-us-east-2"></a> [s3\_bucket-us-east-2](#module\_s3\_bucket-us-east-2) | ./modules/s3_bucket | n/a |
 | <a name="module_securityhub_eu-west-1"></a> [securityhub\_eu-west-1](#module\_securityhub\_eu-west-1) | ./modules/securityhub | n/a |
 | <a name="module_securityhub_us-east-1"></a> [securityhub\_us-east-1](#module\_securityhub\_us-east-1) | ./modules/securityhub | n/a |
 | <a name="module_securityhub_us-east-2"></a> [securityhub\_us-east-2](#module\_securityhub\_us-east-2) | ./modules/securityhub | n/a |
@@ -78,7 +80,6 @@ This module is composed of several submodules, all of which can be used independ
 | Name | Description | Type | Default | Required |
 |------|-------------|------|---------|:--------:|
 | <a name="input_account_type"></a> [account\_type](#input\_account\_type) | AWS account type (master, administrator, log, member) | `string` | n/a | yes |
-| <a name="input_aws_region"></a> [aws\_region](#input\_aws\_region) | AWS region | `string` | `"us-east-1"` | no |
 | <a name="input_bucket_custom_policy_json"></a> [bucket\_custom\_policy\_json](#input\_bucket\_custom\_policy\_json) | Custom S3 bucket policy override JSON | `string` | `""` | no |
 | <a name="input_cloudtrail_s3_key_prefix"></a> [cloudtrail\_s3\_key\_prefix](#input\_cloudtrail\_s3\_key\_prefix) | S3 key prefix for CloudTrail | `string` | `"cloudtrail"` | no |
 | <a name="input_config_s3_bucket_key_prefix"></a> [config\_s3\_bucket\_key\_prefix](#input\_config\_s3\_bucket\_key\_prefix) | S3 key prefix for Config | `string` | `"config"` | no |
@@ -116,5 +117,10 @@ This module is composed of several submodules, all of which can be used independ
 
 ## Outputs
 
-No outputs.
+| Name | Description |
+|------|-------------|
+| <a name="output_s3_bucket_arns"></a> [s3\_bucket\_arns](#output\_s3\_bucket\_arns) | S3 Bucket ARNs |
+| <a name="output_s3_bucket_names"></a> [s3\_bucket\_names](#output\_s3\_bucket\_names) | S3 Bucket Names |
+| <a name="output_s3_bucket_region_arn_map"></a> [s3\_bucket\_region\_arn\_map](#output\_s3\_bucket\_region\_arn\_map) | Map of regions and S3 ARNs |
+| <a name="output_s3_bucket_region_name_map"></a> [s3\_bucket\_region\_name\_map](#output\_s3\_bucket\_region\_name\_map) | Map of regions and S3 names |
 <!-- END OF PRE-COMMIT-TERRAFORM DOCS HOOK -->
