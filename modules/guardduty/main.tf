@@ -55,9 +55,9 @@ resource "aws_guardduty_organization_admin_account" "self" {
 
 # aws guardduty get-detector --detector-id
 # aws guardduty list-detectors
-# Regional - All accounts
+# Regional - Administrator
 resource "aws_guardduty_detector" "self" {
-  count                        = var.enable ? 1 : 0
+  count                        = var.enable && var.account_type == "administrator" ? 1 : 0
   enable                       = true
   finding_publishing_frequency = var.finding_publishing_frequency
   datasources {
