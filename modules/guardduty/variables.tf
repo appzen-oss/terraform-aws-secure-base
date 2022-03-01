@@ -1,13 +1,13 @@
 
 variable "account_type" {
-  description = "AWS account type (master, administrator, member)"
+  description = "AWS account type (master, administrator, log, member)"
   type        = string
   validation {
     condition = contains(
-      ["master", "administrator", "member"],
+      ["master", "administrator", "log", "member"],
       var.account_type
     )
-    error_message = "Must be one of: master, administrator, member."
+    error_message = "Must be one of: master, administrator, log, member."
   }
 }
 

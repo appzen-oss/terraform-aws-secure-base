@@ -43,7 +43,7 @@ No modules.
 
 | Name | Description | Type | Default | Required |
 |------|-------------|------|---------|:--------:|
-| <a name="input_account_type"></a> [account\_type](#input\_account\_type) | AWS account type (master, administrator, member) | `string` | n/a | yes |
+| <a name="input_account_type"></a> [account\_type](#input\_account\_type) | AWS account type (master, administrator, log, member) | `string` | n/a | yes |
 | <a name="input_delivery_channel_name"></a> [delivery\_channel\_name](#input\_delivery\_channel\_name) | n/a | `string` | n/a | yes |
 | <a name="input_delivery_frequency"></a> [delivery\_frequency](#input\_delivery\_frequency) | n/a | `string` | `""` | no |
 | <a name="input_enable"></a> [enable](#input\_enable) | Enable AWS Config and delegate administrator | `bool` | `true` | no |
