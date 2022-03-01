@@ -7,7 +7,12 @@
 A terraform module to set up an AWS multi-account, multi-region organization
 with account/region security setting and security services.
 
+***Module is still a Work in Progress***
+
 ## Features
+
+- Designed to delegate management of all security services to dedicated administrator account
+- Designed to send all logs to a dedicated log account
 
 ## Usage
 
