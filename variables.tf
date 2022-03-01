@@ -10,11 +10,11 @@ variable "account_type" {
     error_message = "Must be one of: master, administrator, log, member."
   }
 }
-variable "aws_region" {
-  description = "AWS region"
-  type        = string
-  default     = "us-east-1"
-}
+#variable "aws_region" {
+#  description = "AWS region"
+#  type        = string
+#  default     = "us-east-1"
+#}
 #variable "enable_artifact" {
 #  description = "Enable AWS Artifact service"
 #  type        = bool
