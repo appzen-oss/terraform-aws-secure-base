@@ -1,22 +1,20 @@
 
 variable "account_type" {
-  description = "AWS account type (master, administrator, member)"
+  description = "AWS account type (master, administrator, log, member)"
   type        = string
   validation {
     condition = contains(
-      ["master", "administrator", "member"],
+      ["master", "administrator", "log", "member"],
       var.account_type
     )
-    error_message = "Must be one of: master, administrator, member."
+    error_message = "Must be one of: master, administrator, log, member."
   }
 }
-
 variable "aws_region" {
-  description = "The AWS region in which global resources are set up."
+  description = "AWS region"
   type        = string
   default     = "us-east-1"
 }
-
 #variable "enable_artifact" {
 #  description = "Enable AWS Artifact service"
 #  type        = bool

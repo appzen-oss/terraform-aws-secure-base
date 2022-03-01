@@ -4,6 +4,11 @@ variable "enable" {
   type        = bool
   default     = true
 }
+variable "enable_versioning" {
+  description = "Enable S3 object versioning"
+  type        = bool
+  default     = true
+}
 variable "bucket_custom_policy_json" {
   description = "Custom S3 bucket policy override JSON"
   type        = string

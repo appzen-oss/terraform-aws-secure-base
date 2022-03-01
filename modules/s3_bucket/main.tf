@@ -64,15 +64,15 @@ resource "aws_s3_bucket_acl" "self" {
 #  }
 #}
 
-#resource "aws_s3_bucket_versioning" "self" {
-#  count      = var.enable && var.enable_versioning ? 1 : 0
-#  depends_on = [aws_s3_bucket.self]
-#  bucket     = aws_s3_bucket.self[0].id
-#  #expected_bucket_owner =
-#  versioning_configuration {
-#    status = "Enabled"
-#  }
-#}
+resource "aws_s3_bucket_versioning" "self" {
+  count      = var.enable && var.enable_versioning ? 1 : 0
+  depends_on = [aws_s3_bucket.self]
+  bucket     = aws_s3_bucket.self[0].id
+  #expected_bucket_owner =
+  versioning_configuration {
+    status = "Enabled"
+  }
+}
 
 #resource "aws_s3_bucket_logging" "self" {
 #  count      = var.enable && var.logging != null ? 1 : 0
