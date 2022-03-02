@@ -41,6 +41,7 @@ This module is composed of several submodules, all of which can be used independ
 | Name | Version |
 |------|---------|
 | <a name="provider_aws"></a> [aws](#provider\_aws) | 4.2.0 |
+| <a name="provider_terraform"></a> [terraform](#provider\_terraform) | n/a |
 
 ## Modules
 
@@ -76,6 +77,7 @@ This module is composed of several submodules, all of which can be used independ
 | [aws_organizations_organization.self](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/organizations_organization) | resource |
 | [aws_organizations_organization.self](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/data-sources/organizations_organization) | data source |
 | [aws_region.current](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/data-sources/region) | data source |
+| [terraform_remote_state.log](https://registry.terraform.io/providers/hashicorp/terraform/latest/docs/data-sources/remote_state) | data source |
 
 ## Inputs
 
@@ -115,6 +117,11 @@ This module is composed of several submodules, all of which can be used independ
 | <a name="input_iam_require_numbers"></a> [iam\_require\_numbers](#input\_iam\_require\_numbers) | Whether to require numbers for user passwords. | `bool` | `true` | no |
 | <a name="input_iam_require_symbols"></a> [iam\_require\_symbols](#input\_iam\_require\_symbols) | Whether to require symbols for user passwords. | `bool` | `true` | no |
 | <a name="input_iam_require_uppercase_characters"></a> [iam\_require\_uppercase\_characters](#input\_iam\_require\_uppercase\_characters) | Whether to require uppercase characters for user passwords. | `bool` | `true` | no |
+| <a name="input_log_remote_state_aws_profile"></a> [log\_remote\_state\_aws\_profile](#input\_log\_remote\_state\_aws\_profile) | Remote Terraform state AWS profile for log account access | `string` | n/a | yes |
+| <a name="input_log_remote_state_dynamodb_table"></a> [log\_remote\_state\_dynamodb\_table](#input\_log\_remote\_state\_dynamodb\_table) | Remote Terraform state DynamoDB table for log account | `string` | n/a | yes |
+| <a name="input_log_remote_state_s3_bucket"></a> [log\_remote\_state\_s3\_bucket](#input\_log\_remote\_state\_s3\_bucket) | Remote Terraform state S3 bucket for log account | `string` | n/a | yes |
+| <a name="input_log_remote_state_s3_key"></a> [log\_remote\_state\_s3\_key](#input\_log\_remote\_state\_s3\_key) | Remote Terraform state S3 key for log account | `string` | n/a | yes |
+| <a name="input_log_remote_state_s3_region"></a> [log\_remote\_state\_s3\_region](#input\_log\_remote\_state\_s3\_region) | Remote Terraform state S3 bucket region for log account | `string` | `"us-east-1"` | no |
 | <a name="input_s3_block_public_acls"></a> [s3\_block\_public\_acls](#input\_s3\_block\_public\_acls) | Whether Amazon S3 should block public ACLs for buckets in this account. Defaults to true. | `bool` | `true` | no |
 | <a name="input_s3_block_public_policy"></a> [s3\_block\_public\_policy](#input\_s3\_block\_public\_policy) | Whether Amazon S3 should block public bucket policies for buckets in this account. Defaults to true. | `bool` | `true` | no |
 | <a name="input_s3_ignore_public_acls"></a> [s3\_ignore\_public\_acls](#input\_s3\_ignore\_public\_acls) | Whether Amazon S3 should ignore public ACLs for buckets in this account. Defaults to true. | `bool` | `true` | no |

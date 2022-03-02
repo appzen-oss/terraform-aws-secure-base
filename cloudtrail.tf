@@ -17,8 +17,7 @@ module "cloudtrail" {
   insight_selector              = var.cloudtrail_insight_selector
   is_multi_region_trail         = var.cloudtrail_is_multi_region_trail
   is_organization_trail         = var.cloudtrail_is_organization_trail
-  # S3 buckets not created in same account. Data is not here. Need to pull from remote state
-  s3_bucket_name = local.s3_bucket_region_name_map[data.aws_region.current.name]
+  s3_bucket_name                = data.terraform_remote_state.log.outputs.s3_bucket_region_name_map[data.aws_region.current.name]
   #s3_bucket_name                = lookup(local.s3_bucket_region_name_map, data.aws_region.current.name, module.s3_bucket-us-east-1[0].s3_bucket_name)
   s3_key_prefix = var.cloudtrail_s3_key_prefix
 }
