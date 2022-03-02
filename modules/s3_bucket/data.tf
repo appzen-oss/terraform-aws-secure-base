@@ -12,6 +12,7 @@ locals {
   cloudtrail_destination = join("/", [local.s3_bucket_arn, trim(var.cloudtrail_s3_key_prefix, "/")])
   config_destination     = join("/", [local.s3_bucket_arn, trim(var.config_s3_bucket_key_prefix, "/")])
   flow_logs_destination  = join("/", [local.s3_bucket_arn, trim(var.vpc_flow_logs_s3_key_prefix, "/")])
+  member_account_ids     = sort(data.aws_organizations_organization.org.accounts[*].id)
 }
 
 data "aws_organizations_organization" "org" {
@@ -131,7 +132,7 @@ data "aws_iam_policy_document" "s3_cloud_trail" {
     #condition {
     #  test     = "StringEquals"
     #  variable = "aws:SourceArn"
-    #  values   = formatlist("arn:aws:cloudtrail:%s:%s:trail/*", data.aws_region.current.name, data.aws_organizations_organization.org.accounts[*].id)
+    #  values   = formatlist("arn:aws:cloudtrail:%s:%s:trail/*", data.aws_region.current.name, local.member_account_ids)
     #}
   }
   statement {
@@ -141,7 +142,7 @@ data "aws_iam_policy_document" "s3_cloud_trail" {
       type        = "Service"
       identifiers = ["cloudtrail.amazonaws.com"]
     }
-    resources = formatlist("%s/AWSLogs/%s/CloudTrail*", local.cloudtrail_destination, data.aws_organizations_organization.org.accounts[*].id)
+    resources = formatlist("%s/AWSLogs/%s/CloudTrail*", local.cloudtrail_destination, local.member_account_ids)
     condition {
       test     = "StringEquals"
       variable = "s3:x-amz-acl"
@@ -150,7 +151,7 @@ data "aws_iam_policy_document" "s3_cloud_trail" {
     #condition {
     #  test     = "StringEquals"
     #  variable = "aws:SourceArn"
-    #  values   = formatlist("arn:aws:cloudtrail:%s:%s:trail/*", data.aws_region.current.name, data.aws_organizations_organization.org.accounts[*].id)
+    #  values   = formatlist("arn:aws:cloudtrail:%s:%s:trail/*", data.aws_region.current.name, local.member_account_ids)
     #}
   }
 }
@@ -176,7 +177,7 @@ data "aws_iam_policy_document" "s3_config" {
     condition {
       test     = "StringEquals"
       variable = "AWS:SourceAccount"
-      values   = data.aws_organizations_organization.org.accounts[*].id
+      values   = local.member_account_ids
     }
   }
   statement {
@@ -190,7 +191,7 @@ data "aws_iam_policy_document" "s3_config" {
     condition {
       test     = "StringEquals"
       variable = "AWS:SourceAccount"
-      values   = data.aws_organizations_organization.org.accounts[*].id
+      values   = local.member_account_ids
     }
   }
   statement {
@@ -200,7 +201,7 @@ data "aws_iam_policy_document" "s3_config" {
       type        = "Service"
       identifiers = ["config.amazonaws.com"]
     }
-    resources = formatlist("%s/AWSLogs/%s/Config/*", local.config_destination, data.aws_organizations_organization.org.accounts[*].id)
+    resources = formatlist("%s/AWSLogs/%s/Config/*", local.config_destination, local.member_account_ids)
     condition {
       test     = "StringEquals"
       variable = "s3:x-amz-acl"
@@ -209,7 +210,7 @@ data "aws_iam_policy_document" "s3_config" {
     condition {
       test     = "StringEquals"
       variable = "AWS:SourceAccount"
-      values   = data.aws_organizations_organization.org.accounts[*].id
+      values   = local.member_account_ids
     }
   }
   # ?? Access for AWS accounts - Unclear if these are needed
@@ -217,7 +218,7 @@ data "aws_iam_policy_document" "s3_config" {
     sid = "AWSConfigBucketPermissionsCheckForMemberAccounts"
     principals {
       type        = "AWS"
-      identifiers = formatlist("arn:aws:iam::%s:root", data.aws_organizations_organization.org.accounts[*].id)
+      identifiers = formatlist("arn:aws:iam::%s:root", local.member_account_ids)
     }
     actions   = ["s3:GetBucketAcl"]
     resources = [local.s3_bucket_arn]
@@ -226,7 +227,7 @@ data "aws_iam_policy_document" "s3_config" {
     sid = "AWSConfigBucketExistenceCheckForMemberAccounts"
     principals {
       type        = "AWS"
-      identifiers = formatlist("arn:aws:iam::%s:root", data.aws_organizations_organization.org.accounts[*].id)
+      identifiers = formatlist("arn:aws:iam::%s:root", local.member_account_ids)
     }
     actions   = ["s3:ListBucket", "s3:GetBucketLocation"]
     resources = [local.s3_bucket_arn]
@@ -235,10 +236,10 @@ data "aws_iam_policy_document" "s3_config" {
     sid = "AWSConfigBucketDeliveryForMemberAccounts"
     principals {
       type        = "AWS"
-      identifiers = formatlist("arn:aws:iam::%s:root", data.aws_organizations_organization.org.accounts[*].id)
+      identifiers = formatlist("arn:aws:iam::%s:root", local.member_account_ids)
     }
     actions   = ["s3:PutObject"]
-    resources = formatlist("%s/AWSLogs/%s/Config/*", local.config_destination, data.aws_organizations_organization.org.accounts[*].id)
+    resources = formatlist("%s/AWSLogs/%s/Config/*", local.config_destination, local.member_account_ids)
     condition {
       test     = "StringEquals"
       variable = "s3:x-amz-acl"
@@ -266,12 +267,12 @@ data "aws_iam_policy_document" "s3_flow_logs" {
     condition {
       test     = "StringEquals"
       variable = "AWS:SourceAccount"
-      values   = data.aws_organizations_organization.org.accounts[*].id
+      values   = local.member_account_ids
     }
     #condition {
     #  test     = "ArnLike"
     #  variable = "aws:SourceArn"
-    #  values   = formatlist("arn:aws:logs:%s:%s:*", data.aws_region.current.name, data.aws_organizations_organization.org.accounts[*].id)
+    #  values   = formatlist("arn:aws:logs:%s:%s:*", data.aws_region.current.name, local.member_account_ids)
     #}
   }
   statement {
@@ -281,7 +282,7 @@ data "aws_iam_policy_document" "s3_flow_logs" {
       type        = "Service"
       identifiers = ["delivery.logs.amazonaws.com"]
     }
-    resources = formatlist("%s/AWSLogs/%s/vpcflowlogs/*", local.flow_logs_destination, data.aws_organizations_organization.org.accounts[*].id)
+    resources = formatlist("%s/AWSLogs/%s/vpcflowlogs/*", local.flow_logs_destination, local.member_account_ids)
     condition {
       test     = "StringEquals"
       variable = "s3:x-amz-acl"
@@ -290,12 +291,12 @@ data "aws_iam_policy_document" "s3_flow_logs" {
     condition {
       test     = "StringEquals"
       variable = "AWS:SourceAccount"
-      values   = data.aws_organizations_organization.org.accounts[*].id
+      values   = local.member_account_ids
     }
     #condition {
     #  test     = "ArnLike"
     #  variable = "aws:SourceArn"
-    #  values   = formatlist("arn:aws:logs:%s:%s:*", data.aws_region.current.name, data.aws_organizations_organization.org.accounts[*].id)
+    #  values   = formatlist("arn:aws:logs:%s:%s:*", data.aws_region.current.name, local.member_account_ids)
     #}
   }
 }
