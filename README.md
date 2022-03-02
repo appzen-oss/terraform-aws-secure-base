@@ -75,7 +75,6 @@ This module is composed of several submodules, all of which can be used independ
 |------|------|
 | [aws_organizations_organization.self](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/organizations_organization) | resource |
 | [aws_organizations_organization.self](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/data-sources/organizations_organization) | data source |
-| [aws_region.current](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/data-sources/region) | data source |
 
 ## Inputs
 
@@ -90,6 +89,7 @@ This module is composed of several submodules, all of which can be used independ
 | <a name="input_cloudtrail_is_multi_region_trail"></a> [cloudtrail\_is\_multi\_region\_trail](#input\_cloudtrail\_is\_multi\_region\_trail) | Specifies whether the trail is created in the current region or in all regions | `bool` | `true` | no |
 | <a name="input_cloudtrail_is_organization_trail"></a> [cloudtrail\_is\_organization\_trail](#input\_cloudtrail\_is\_organization\_trail) | The trail is an AWS Organizations trail | `bool` | `true` | no |
 | <a name="input_cloudtrail_name"></a> [cloudtrail\_name](#input\_cloudtrail\_name) | CloudTrail trail name | `string` | `"org"` | no |
+| <a name="input_cloudtrail_s3_bucket"></a> [cloudtrail\_s3\_bucket](#input\_cloudtrail\_s3\_bucket) | CloudTrail S3 bucket | `string` | `null` | no |
 | <a name="input_cloudtrail_s3_key_prefix"></a> [cloudtrail\_s3\_key\_prefix](#input\_cloudtrail\_s3\_key\_prefix) | S3 key prefix for CloudTrail | `string` | `"cloudtrail"` | no |
 | <a name="input_config_s3_bucket_key_prefix"></a> [config\_s3\_bucket\_key\_prefix](#input\_config\_s3\_bucket\_key\_prefix) | S3 key prefix for Config | `string` | `"config"` | no |
 | <a name="input_ecr_scan_type"></a> [ecr\_scan\_type](#input\_ecr\_scan\_type) | ECR scanning type (BASIC or ENHANCED) | `string` | `"BASIC"` | no |

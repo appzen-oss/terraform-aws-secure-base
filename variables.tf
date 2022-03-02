@@ -344,6 +344,11 @@ variable "cloudtrail_name" {
   type        = string
   default     = "org"
 }
+variable "cloudtrail_s3_bucket" {
+  description = "CloudTrail S3 bucket"
+  type        = string
+  default     = null
+}
 
 ### -----------------------------
 ### S3 Bucket
