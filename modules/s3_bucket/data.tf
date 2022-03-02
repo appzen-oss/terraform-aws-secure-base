@@ -13,6 +13,7 @@ locals {
   config_destination     = join("/", [local.s3_bucket_arn, trim(var.config_s3_bucket_key_prefix, "/")])
   flow_logs_destination  = join("/", [local.s3_bucket_arn, trim(var.vpc_flow_logs_s3_key_prefix, "/")])
   member_account_ids     = sort(data.aws_organizations_organization.org.accounts[*].id)
+  org_id                 = data.aws_organizations_organization.org.id
 }
 
 data "aws_organizations_organization" "org" {
@@ -142,7 +143,8 @@ data "aws_iam_policy_document" "s3_cloud_trail" {
       type        = "Service"
       identifiers = ["cloudtrail.amazonaws.com"]
     }
-    resources = formatlist("%s/AWSLogs/%s/CloudTrail*", local.cloudtrail_destination, local.member_account_ids)
+    # Allow org id to write? & master
+    resources = formatlist("%s/AWSLogs/%s/CloudTrail*", local.cloudtrail_destination, concat(local.member_account_ids, ["master"], [local.org_id]))
     condition {
       test     = "StringEquals"
       variable = "s3:x-amz-acl"

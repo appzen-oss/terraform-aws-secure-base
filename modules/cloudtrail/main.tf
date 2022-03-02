@@ -36,3 +36,5 @@ module "cloudtrail" {
   s3_bucket_name                = var.s3_bucket_name
   s3_key_prefix                 = var.s3_key_prefix
 }
+
+# Pass tags
