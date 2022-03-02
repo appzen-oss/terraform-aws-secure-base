@@ -1,7 +1,7 @@
 
 locals {
   enable        = var.enable ? 1 : 0
-  s3_bucket_arn = join("", aws_s3_bucket.self.*.arn)
+  s3_bucket_arn = one(aws_s3_bucket.self.*.arn)
 }
 
 module "label" {
