@@ -16,6 +16,14 @@ locals {
     module.s3_bucket-us-east-1.*.s3_bucket_name,
     module.s3_bucket-us-east-2.*.s3_bucket_name
   ]
+  s3_bucket_region_arn_map = zipmap(
+    local.s3_bucket_regions,
+    matchkeys(local.s3_bucket_arns, local.s3_bucket_regions, var.target_regions)
+  )
+  s3_bucket_region_name_map = zipmap(
+    local.s3_bucket_regions,
+    matchkeys(local.s3_bucket_names, local.s3_bucket_regions, var.target_regions)
+  )
 }
 
 module "s3_bucket-eu-west-1" {

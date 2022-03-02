@@ -298,6 +298,54 @@ variable "s3_restrict_public_buckets" {
 }
 
 ### -----------------------------
+### CloudTrail
+### -----------------------------
+variable "cloudtrail_enable_log_file_validation" {
+  description = "Specifies whether log file integrity validation is enabled. Creates signed digest for validated contents of logs"
+  type        = bool
+  default     = true
+}
+
+variable "cloudtrail_enable_logging" {
+  description = "Enable logging for the trail"
+  type        = bool
+  default     = true
+}
+
+variable "cloudtrail_include_global_service_events" {
+  description = "Specifies whether the trail is publishing events from global services such as IAM to the log files"
+  type        = bool
+  default     = true
+}
+
+variable "cloudtrail_insight_selector" {
+  description = "Specifies an insight selector for identifying unusual operational activity. See: https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/cloudtrail#insight_type details for this variable"
+  type = list(object({
+    insight_type = string
+  }))
+
+  default = [{ insight_type = "ApiCallRateInsight" }]
+}
+
+variable "cloudtrail_is_multi_region_trail" {
+  description = "Specifies whether the trail is created in the current region or in all regions"
+  type        = bool
+  default     = true
+}
+
+variable "cloudtrail_is_organization_trail" {
+  description = "The trail is an AWS Organizations trail"
+  type        = bool
+  default     = true
+}
+
+variable "cloudtrail_name" {
+  description = "CloudTrail trail name"
+  type        = string
+  default     = "org"
+}
+
+### -----------------------------
 ### S3 Bucket
 ### -----------------------------
 variable "enable_s3_buckets" {

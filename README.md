@@ -54,6 +54,7 @@ This module is composed of several submodules, all of which can be used independ
 | <a name="module_baseline_ecr_us-east-2"></a> [baseline\_ecr\_us-east-2](#module\_baseline\_ecr\_us-east-2) | ./modules/baseline_ecr | n/a |
 | <a name="module_baseline_iam"></a> [baseline\_iam](#module\_baseline\_iam) | ./modules/baseline_iam | n/a |
 | <a name="module_baseline_s3"></a> [baseline\_s3](#module\_baseline\_s3) | ./modules/baseline_s3 | n/a |
+| <a name="module_cloudtrail"></a> [cloudtrail](#module\_cloudtrail) | ./modules/cloudtrail | n/a |
 | <a name="module_firewall_manager_us-east-1"></a> [firewall\_manager\_us-east-1](#module\_firewall\_manager\_us-east-1) | ./modules/firewall_manager | n/a |
 | <a name="module_guardduty-eu-west-1"></a> [guardduty-eu-west-1](#module\_guardduty-eu-west-1) | ./modules/guardduty | n/a |
 | <a name="module_guardduty-us-east-1"></a> [guardduty-us-east-1](#module\_guardduty-us-east-1) | ./modules/guardduty | n/a |
@@ -74,6 +75,7 @@ This module is composed of several submodules, all of which can be used independ
 |------|------|
 | [aws_organizations_organization.self](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/organizations_organization) | resource |
 | [aws_organizations_organization.self](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/data-sources/organizations_organization) | data source |
+| [aws_region.current](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/data-sources/region) | data source |
 
 ## Inputs
 
@@ -81,6 +83,13 @@ This module is composed of several submodules, all of which can be used independ
 |------|-------------|------|---------|:--------:|
 | <a name="input_account_type"></a> [account\_type](#input\_account\_type) | AWS account type (master, administrator, log, member) | `string` | n/a | yes |
 | <a name="input_bucket_custom_policy_json"></a> [bucket\_custom\_policy\_json](#input\_bucket\_custom\_policy\_json) | Custom S3 bucket policy override JSON | `string` | `""` | no |
+| <a name="input_cloudtrail_enable_log_file_validation"></a> [cloudtrail\_enable\_log\_file\_validation](#input\_cloudtrail\_enable\_log\_file\_validation) | Specifies whether log file integrity validation is enabled. Creates signed digest for validated contents of logs | `bool` | `true` | no |
+| <a name="input_cloudtrail_enable_logging"></a> [cloudtrail\_enable\_logging](#input\_cloudtrail\_enable\_logging) | Enable logging for the trail | `bool` | `true` | no |
+| <a name="input_cloudtrail_include_global_service_events"></a> [cloudtrail\_include\_global\_service\_events](#input\_cloudtrail\_include\_global\_service\_events) | Specifies whether the trail is publishing events from global services such as IAM to the log files | `bool` | `true` | no |
+| <a name="input_cloudtrail_insight_selector"></a> [cloudtrail\_insight\_selector](#input\_cloudtrail\_insight\_selector) | Specifies an insight selector for identifying unusual operational activity. See: https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/cloudtrail#insight_type details for this variable | <pre>list(object({<br>    insight_type = string<br>  }))</pre> | <pre>[<br>  {<br>    "insight_type": "ApiCallRateInsight"<br>  }<br>]</pre> | no |
+| <a name="input_cloudtrail_is_multi_region_trail"></a> [cloudtrail\_is\_multi\_region\_trail](#input\_cloudtrail\_is\_multi\_region\_trail) | Specifies whether the trail is created in the current region or in all regions | `bool` | `true` | no |
+| <a name="input_cloudtrail_is_organization_trail"></a> [cloudtrail\_is\_organization\_trail](#input\_cloudtrail\_is\_organization\_trail) | The trail is an AWS Organizations trail | `bool` | `true` | no |
+| <a name="input_cloudtrail_name"></a> [cloudtrail\_name](#input\_cloudtrail\_name) | CloudTrail trail name | `string` | `"org"` | no |
 | <a name="input_cloudtrail_s3_key_prefix"></a> [cloudtrail\_s3\_key\_prefix](#input\_cloudtrail\_s3\_key\_prefix) | S3 key prefix for CloudTrail | `string` | `"cloudtrail"` | no |
 | <a name="input_config_s3_bucket_key_prefix"></a> [config\_s3\_bucket\_key\_prefix](#input\_config\_s3\_bucket\_key\_prefix) | S3 key prefix for Config | `string` | `"config"` | no |
 | <a name="input_ecr_scan_type"></a> [ecr\_scan\_type](#input\_ecr\_scan\_type) | ECR scanning type (BASIC or ENHANCED) | `string` | `"BASIC"` | no |

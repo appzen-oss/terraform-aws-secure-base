@@ -6,18 +6,33 @@
 # Configure cloudtrail per account
 # Upload SCP policy to org to prevent changes
 #
+#https://docs.aws.amazon.com/awscloudtrail/latest/userguide/receive-cloudtrail-log-files-from-multiple-regions.html
+#https://docs.aws.amazon.com/awscloudtrail/latest/userguide/creating-trail-organization.html
+#https://docs.aws.amazon.com/awscloudtrail/latest/userguide/cloudtrail-create-and-update-an-organizational-trail-by-using-the-aws-cli.html
+# org cloudtrail in org master and primary region
+
+#aws cloudtrail create-trail --name my-trail --s3-bucket-name my-bucket --is-organization-trail --is-multi-region-trail
+#aws cloudtrail update-trail --name my-trail --is-organization-trail
+
 # tf-wrappers/environments/cloudtrail
-#   using modified cloudposse fork
-#module "cloudtrail" {
-#  source  = "appzen-oss/cloudtrail/aws"
-#  version = "0.20.0"
-#
-#  name                          = "${trimprefix(var.aws_profile, "appzen-")}-account-trail"
-#  enable_log_file_validation    = var.enable_log_file_validation
-#  include_global_service_events = var.include_global_service_events
-#  is_multi_region_trail         = var.is_multi_region_trail
-#  insight_selector              = var.insight_selector
-#  enable_logging                = var.enable_logging
-#  s3_bucket_name                = var.s3_bucket_name
-#  s3_key_prefix                 = var.s3_key_prefix
-#}
+#   using modified cloudposse (0.21.0) fork
+#     insight_selector
+# Supports organization & multi-region, kms, sns
+# filter Exclude AWS KMS events or Exclude Amazon RDS Data API events
+#   event_selector (supported) or advanced_event_selector
+
+#tfsec:ignore:aws-cloudtrail-enable-at-rest-encryption
+module "cloudtrail" {
+  source  = "appzen-oss/cloudtrail/aws"
+  version = "0.21.1"
+
+  name                          = var.name
+  enable_log_file_validation    = var.enable_log_file_validation
+  include_global_service_events = var.include_global_service_events
+  is_multi_region_trail         = var.is_multi_region_trail
+  is_organization_trail         = var.is_organization_trail
+  insight_selector              = var.insight_selector
+  enable_logging                = var.enable_logging
+  s3_bucket_name                = var.s3_bucket_name
+  s3_key_prefix                 = var.s3_key_prefix
+}

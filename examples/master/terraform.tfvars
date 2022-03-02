@@ -5,7 +5,7 @@ security_administrator_account_id = 123456789012
 target_regions                    = ["us-east-1"]
 
 # Infrastructure
-enable_s3_buckets = false
+enable_s3_buckets = true
 
 # AWS Account/Region security settings
 enable_ebs_baseline = false
@@ -14,7 +14,7 @@ enable_iam_baseline = false
 enable_s3_baseline  = false
 
 # AWS Security Services
-enable_cloudtrail          = false
+enable_cloudtrail          = true
 enable_config              = false
 enable_firewall_manager    = false
 enable_guardduty           = false

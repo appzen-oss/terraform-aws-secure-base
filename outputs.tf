@@ -13,15 +13,9 @@ output "s3_bucket_names" {
 }
 output "s3_bucket_region_arn_map" {
   description = "Map of regions and S3 ARNs"
-  value = zipmap(
-    local.s3_bucket_regions,
-    matchkeys(local.s3_bucket_arns, local.s3_bucket_regions, var.target_regions)
-  )
+  value       = local.s3_bucket_region_arn_map
 }
 output "s3_bucket_region_name_map" {
   description = "Map of regions and S3 names"
-  value = zipmap(
-    local.s3_bucket_regions,
-    matchkeys(local.s3_bucket_names, local.s3_bucket_regions, var.target_regions)
-  )
+  value       = local.s3_bucket_region_name_map
 }
