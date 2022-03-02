@@ -144,7 +144,8 @@ data "aws_iam_policy_document" "s3_cloud_trail" {
       identifiers = ["cloudtrail.amazonaws.com"]
     }
     # Allow org id to write? & master
-    resources = formatlist("%s/AWSLogs/%s/CloudTrail*", local.cloudtrail_destination, concat(local.member_account_ids, ["master"], [local.org_id]))
+    #resources = formatlist("%s/AWSLogs/%s/CloudTrail*", local.cloudtrail_destination, concat(local.member_account_ids, ["master"], [local.org_id]))
+    resources = formatlist("%s/AWSLogs/%s/*", local.cloudtrail_destination, concat(local.member_account_ids, ["master"], [local.org_id]))
     condition {
       test     = "StringEquals"
       variable = "s3:x-amz-acl"
