@@ -7,14 +7,14 @@ locals {
     "us-east-2"
   ]
   s3_bucket_arns = [
-    module.s3_bucket-eu-west-1.*.s3_bucket_arn,
-    module.s3_bucket-us-east-1.*.s3_bucket_arn,
-    module.s3_bucket-us-east-2.*.s3_bucket_arn
+    module.s3_bucket-eu-west-1[0].s3_bucket_arn,
+    module.s3_bucket-us-east-1[0].s3_bucket_arn,
+    module.s3_bucket-us-east-2[0].s3_bucket_arn
   ]
   s3_bucket_names = [
-    module.s3_bucket-eu-west-1.*.s3_bucket_name,
-    module.s3_bucket-us-east-1.*.s3_bucket_name,
-    module.s3_bucket-us-east-2.*.s3_bucket_name
+    module.s3_bucket-eu-west-1[0].s3_bucket_name,
+    module.s3_bucket-us-east-1[0].s3_bucket_name,
+    module.s3_bucket-us-east-2[0].s3_bucket_name
   ]
   s3_bucket_region_arn_map = zipmap(
     local.s3_bucket_regions,
