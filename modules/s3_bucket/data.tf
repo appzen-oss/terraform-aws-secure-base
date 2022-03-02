@@ -144,7 +144,7 @@ data "aws_iam_policy_document" "s3_cloud_trail" {
       identifiers = ["cloudtrail.amazonaws.com"]
     }
     resources = concat(
-      formatlist("%s/AWSLogs/%s/*/CloudTrail*", local.cloudtrail_destination, [local.org_id])
+      formatlist("%s/AWSLogs/%s/*/CloudTrail*", local.cloudtrail_destination, [local.org_id]),
       formatlist("%s/AWSLogs/%s/CloudTrail*", local.cloudtrail_destination, local.member_account_ids)
       )
     condition {
