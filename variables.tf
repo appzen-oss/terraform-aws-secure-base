@@ -345,31 +345,6 @@ variable "cloudtrail_name" {
   default     = "org"
 }
 
-### ---------------------------------------------
-### Remote Terraform state of log account
-### ---------------------------------------------
-variable "log_remote_state_s3_bucket" {
-  description = "Remote Terraform state S3 bucket for log account"
-  type        = string
-}
-variable "log_remote_state_dynamodb_table" {
-  description = "Remote Terraform state DynamoDB table for log account"
-  type        = string
-}
-variable "log_remote_state_s3_key" {
-  description = "Remote Terraform state S3 key for log account"
-  type        = string
-}
-variable "log_remote_state_aws_profile" {
-  description = "Remote Terraform state AWS profile for log account access"
-  type        = string
-}
-variable "log_remote_state_s3_region" {
-  description = "Remote Terraform state S3 bucket region for log account"
-  type        = string
-  default     = "us-east-1"
-}
-
 ### -----------------------------
 ### S3 Bucket
 ### -----------------------------
