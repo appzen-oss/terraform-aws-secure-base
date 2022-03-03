@@ -23,7 +23,10 @@ variable "insight_selector" {
     insight_type = string
   }))
 
-  default = [{ insight_type = "ApiCallRateInsight" }]
+  default = [
+    { insight_type = "ApiCallRateInsight" },
+    { insight_type = "ApiErrorRateInsight" }
+  ]
 }
 
 variable "is_multi_region_trail" {

@@ -324,7 +324,10 @@ variable "cloudtrail_insight_selector" {
     insight_type = string
   }))
 
-  default = [{ insight_type = "ApiCallRateInsight" }]
+  default = [
+    { insight_type = "ApiCallRateInsight" },
+    { insight_type = "ApiErrorRateInsight" }
+  ]
 }
 
 variable "cloudtrail_is_multi_region_trail" {

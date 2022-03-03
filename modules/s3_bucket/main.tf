@@ -74,6 +74,7 @@ resource "aws_s3_bucket_versioning" "self" {
   }
 }
 
+# TODO: setup
 #resource "aws_s3_bucket_logging" "self" {
 #  count      = var.enable && var.logging != null ? 1 : 0
 #  depends_on = [aws_s3_bucket.self]
@@ -99,6 +100,7 @@ resource "aws_s3_bucket_server_side_encryption_configuration" "self" {
   }
 }
 
+# TODO: setup? WORM - Needs to be part of bucket create or contact support
 #resource "aws_s3_bucket_object_lock_configuration" "self" {
 #  bucket = aws_s3_bucket.example.bucket
 #  rule {
