@@ -53,3 +53,14 @@ variable "s3_key_prefix" {
   type        = string
   default     = null
 }
+
+variable "tags" {
+  description = "Specifies object tags key and value. This applies to all resources created by this module."
+  type        = map(any)
+  default = {
+    "Environment" = "infra"
+    "Product"     = "security"
+    "Team"        = "devops"
+    "Terraform"   = true
+  }
+}

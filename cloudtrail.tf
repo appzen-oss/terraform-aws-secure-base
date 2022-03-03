@@ -19,4 +19,5 @@ module "cloudtrail" {
   is_organization_trail         = var.cloudtrail_is_organization_trail
   s3_bucket_name                = var.cloudtrail_s3_bucket
   s3_key_prefix                 = var.cloudtrail_s3_key_prefix
+  tags                          = var.tags
 }

@@ -133,8 +133,9 @@ data "aws_iam_policy_document" "s3_cloud_trail" {
     #condition {
     #  test     = "StringEquals"
     #  variable = "aws:SourceArn"
-    #  values   = formatlist("arn:aws:cloudtrail:%s:%s:trail/*", data.aws_region.current.name, local.member_account_ids)
+    #  values   = formatlist("arn:aws:cloudtrail::%s:trail/*", local.member_account_ids)
     #}
+    # arn:aws:cloudtrail:us-east-1:225262634975:trail/org
   }
   statement {
     sid     = "AWSCloudTrailWrite20150319"
@@ -146,7 +147,7 @@ data "aws_iam_policy_document" "s3_cloud_trail" {
     resources = concat(
       formatlist("%s/AWSLogs/%s/*/CloudTrail*", local.cloudtrail_destination, [local.org_id]),
       formatlist("%s/AWSLogs/%s/CloudTrail*", local.cloudtrail_destination, local.member_account_ids)
-      )
+    )
     condition {
       test     = "StringEquals"
       variable = "s3:x-amz-acl"
@@ -155,7 +156,7 @@ data "aws_iam_policy_document" "s3_cloud_trail" {
     #condition {
     #  test     = "StringEquals"
     #  variable = "aws:SourceArn"
-    #  values   = formatlist("arn:aws:cloudtrail:%s:%s:trail/*", data.aws_region.current.name, local.member_account_ids)
+    #  values   = formatlist("arn:aws:cloudtrail::%s:trail/*", local.member_account_ids)
     #}
   }
 }

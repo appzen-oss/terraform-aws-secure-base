@@ -45,6 +45,7 @@
 | <a name="input_name"></a> [name](#input\_name) | CloudTrail name | `string` | n/a | yes |
 | <a name="input_s3_bucket_name"></a> [s3\_bucket\_name](#input\_s3\_bucket\_name) | S3 bucket name for CloudTrail logs | `string` | n/a | yes |
 | <a name="input_s3_key_prefix"></a> [s3\_key\_prefix](#input\_s3\_key\_prefix) | Specifies the S3 key prefix that follows the name of the bucket you have designated for log file delivery. | `string` | `null` | no |
+| <a name="input_tags"></a> [tags](#input\_tags) | Specifies object tags key and value. This applies to all resources created by this module. | `map(any)` | <pre>{<br>  "Environment": "infra",<br>  "Product": "security",<br>  "Team": "devops",<br>  "Terraform": true<br>}</pre> | no |
 
 ## Outputs
 

@@ -21,8 +21,11 @@
 # filter Exclude AWS KMS events or Exclude Amazon RDS Data API events
 #   event_selector (supported) or advanced_event_selector
 
+# TODO: put these test ignores in the module
+
 #tfsec:ignore:aws-cloudtrail-enable-at-rest-encryption
 module "cloudtrail" {
+  #ts:skip=AC_AWS_0448 Multi Region is enabled. Not work with Org?
   source  = "appzen-oss/cloudtrail/aws"
   version = "0.21.1"
 
@@ -35,6 +38,7 @@ module "cloudtrail" {
   enable_logging                = var.enable_logging
   s3_bucket_name                = var.s3_bucket_name
   s3_key_prefix                 = var.s3_key_prefix
+  tags                          = var.tags
 }
 
 # Pass tags
