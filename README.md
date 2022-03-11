@@ -105,6 +105,7 @@ This module is composed of several submodules, all of which can be used independ
 | <a name="input_enable_iam_baseline"></a> [enable\_iam\_baseline](#input\_enable\_iam\_baseline) | Boolean whether iam-baseline is enabled. | `bool` | `true` | no |
 | <a name="input_enable_s3_baseline"></a> [enable\_s3\_baseline](#input\_enable\_s3\_baseline) | Enable S3 baseline? | `bool` | `true` | no |
 | <a name="input_enable_s3_buckets"></a> [enable\_s3\_buckets](#input\_enable\_s3\_buckets) | Enable S3 buckets? | `bool` | `false` | no |
+| <a name="input_enable_scp"></a> [enable\_scp](#input\_enable\_scp) | Manage organization SCP policies | `bool` | `true` | no |
 | <a name="input_enable_securityhub"></a> [enable\_securityhub](#input\_enable\_securityhub) | Enable AWS Security Hub service | `bool` | `true` | no |
 | <a name="input_force_destroy"></a> [force\_destroy](#input\_force\_destroy) | Allow destroy of S3 bucket with objects | `bool` | `false` | no |
 | <a name="input_iam_allow_users_to_change_password"></a> [iam\_allow\_users\_to\_change\_password](#input\_iam\_allow\_users\_to\_change\_password) | Whether to allow users to change their own password. | `bool` | `true` | no |

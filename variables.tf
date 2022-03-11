@@ -70,6 +70,11 @@ variable "enable_iam_access_analyzer" {
 #  type        = bool
 #  default     = true
 #}
+variable "enable_scp" {
+  description = "Manage organization SCP policies"
+  type        = bool
+  default     = true
+}
 variable "enable_securityhub" {
   description = "Enable AWS Security Hub service"
   type        = bool
