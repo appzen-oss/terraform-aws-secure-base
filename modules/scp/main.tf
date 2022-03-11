@@ -13,7 +13,7 @@ resource "aws_organizations_policy" "deny_cloudtrail_disable" {
   description = "Prevent CloudTrail from beings disabled"
   tags        = var.tags
   type        = "SERVICE_CONTROL_POLICY"
-  content     = file("files/deny-cloudtrail-disable.json")
+  content     = file("${path.module}/files/deny-cloudtrail-disable.json")
   # templatefile(path, vars)
 }
 resource "aws_organizations_policy" "deny_cloudtrail_tamper" {
@@ -22,7 +22,7 @@ resource "aws_organizations_policy" "deny_cloudtrail_tamper" {
   description = "Prevent CloudTrail trails from beings tampered with"
   tags        = var.tags
   type        = "SERVICE_CONTROL_POLICY"
-  content     = file("files/deny-cloudtrail-tamper.json")
+  content     = file("${path.module}/files/deny-cloudtrail-tamper.json")
 }
 ### -----------------------
 ### Config
@@ -33,7 +33,7 @@ resource "aws_organizations_policy" "deny_config_modify" {
   description = "Prevent Config from beings tampered with"
   tags        = var.tags
   type        = "SERVICE_CONTROL_POLICY"
-  content     = file("files/deny-config-modify.json")
+  content     = file("${path.module}/files/deny-config-modify.json")
 }
 ### -----------------------
 ### EBS
@@ -48,7 +48,7 @@ resource "aws_organizations_policy" "deny_ecr_create_write" {
   description = "Prevent ECR from being created or written too"
   tags        = var.tags
   type        = "SERVICE_CONTROL_POLICY"
-  content     = file("files/deny-ecr-create-write.json")
+  content     = file("${path.module}/files/deny-ecr-create-write.json")
 }
 ### -----------------------
 ### GuardDuty
@@ -59,7 +59,7 @@ resource "aws_organizations_policy" "deny_guardduty_modify" {
   description = "Prevent GuardDuty from being modified"
   tags        = var.tags
   type        = "SERVICE_CONTROL_POLICY"
-  content     = file("files/deny-guardduty-modify.json")
+  content     = file("${path.module}/files/deny-guardduty-modify.json")
 }
 ### -----------------------
 ### IAM
@@ -70,7 +70,7 @@ resource "aws_organizations_policy" "deny_guardduty_modify" {
 #  description = "Prevent ECR from being created or written too"
 #  tags = var.tags
 #  type = "SERVICE_CONTROL_POLICY"
-#  content = file("files/deny-ecr-create-write.json")
+#  content = file("${path.module}/files/deny-ecr-create-write.json")
 #}
 ### -----------------------
 ### Organization
@@ -81,7 +81,7 @@ resource "aws_organizations_policy" "deny_member_leaving" {
   description = "Prevent organization member accounts from leaving the organization"
   tags        = var.tags
   type        = "SERVICE_CONTROL_POLICY"
-  content     = file("files/deny-member-leaving.json")
+  content     = file("${path.module}/files/deny-member-leaving.json")
 }
 ### -----------------------
 ### S3
@@ -92,7 +92,7 @@ resource "aws_organizations_policy" "deny_s3_public" {
   description = "Prevent account S3 public access block from being changed"
   tags        = var.tags
   type        = "SERVICE_CONTROL_POLICY"
-  content     = file("files/deny-s3-public.json")
+  content     = file("${path.module}/files/deny-s3-public.json")
 }
 resource "aws_organizations_policy" "require_s3_encryption" {
   count       = local.enable && var.enable_s3 ? 1 : 0
@@ -100,5 +100,5 @@ resource "aws_organizations_policy" "require_s3_encryption" {
   description = "Require S3 service side encryption"
   tags        = var.tags
   type        = "SERVICE_CONTROL_POLICY"
-  content     = file("files/require-s3-encryption.json")
+  content     = file("${path.module}/files/require-s3-encryption.json")
 }
