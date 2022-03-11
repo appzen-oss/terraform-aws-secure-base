@@ -29,11 +29,6 @@ resource "aws_kms_alias" "self" {
 }
 
 ### Replica KMS Key = Non-primary Regions
-data "aws_kms_key" "primary" {
-  count    = var.enable && var.replica ? 1 : 0
-  key_id   = format("alias/%s", var.alias)
-  provider = aws.primary_kms_key
-}
 resource "aws_kms_replica_key" "self" {
   count                   = var.enable && var.replica ? 1 : 0
   deletion_window_in_days = var.replica_deletion_window_in_days

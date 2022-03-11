@@ -1,0 +1,24 @@
+{
+    "Version": "2012-10-17",
+    "Statement": [
+        {
+            "Sid": "DenyECRCreateWrite",
+            "Effect": "Deny",
+            "Action": [
+                "ecr:BatchDeleteImage",
+                "ecr:CompleteLayerUpload",
+                "ecr:CreateRepository",
+                "ecr:DeleteRepository",
+                "ecr:DeleteRepositoryPolicy",
+                "ecr:GetRepositoryPolicy",
+                "ecr:InitiateLayerUpload",
+                "ecr:PutImage",
+                "ecr:SetRepositoryPolicy",
+                "ecr:UploadLayerPart"
+            ],
+            "Resource": [
+                "*"
+            ]
+        }
+    ]
+}

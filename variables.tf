@@ -144,7 +144,7 @@ variable "ecr_scan_type" {
 ### Baseline EBS
 ### -----------------------------
 variable "enable_ebs_baseline" {
-  description = "Boolean whether iam-baseline is enabled."
+  description = "Boolean whether ebs-baseline is enabled."
   type        = bool
   default     = true
 }

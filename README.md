@@ -65,6 +65,7 @@ This module is composed of several submodules, all of which can be used independ
 | <a name="module_s3_bucket-eu-west-1"></a> [s3\_bucket-eu-west-1](#module\_s3\_bucket-eu-west-1) | ./modules/s3_bucket | n/a |
 | <a name="module_s3_bucket-us-east-1"></a> [s3\_bucket-us-east-1](#module\_s3\_bucket-us-east-1) | ./modules/s3_bucket | n/a |
 | <a name="module_s3_bucket-us-east-2"></a> [s3\_bucket-us-east-2](#module\_s3\_bucket-us-east-2) | ./modules/s3_bucket | n/a |
+| <a name="module_scp"></a> [scp](#module\_scp) | ./modules/scp | n/a |
 | <a name="module_securityhub_eu-west-1"></a> [securityhub\_eu-west-1](#module\_securityhub\_eu-west-1) | ./modules/securityhub | n/a |
 | <a name="module_securityhub_us-east-1"></a> [securityhub\_us-east-1](#module\_securityhub\_us-east-1) | ./modules/securityhub | n/a |
 | <a name="module_securityhub_us-east-2"></a> [securityhub\_us-east-2](#module\_securityhub\_us-east-2) | ./modules/securityhub | n/a |
@@ -96,7 +97,7 @@ This module is composed of several submodules, all of which can be used independ
 | <a name="input_ecr_scanning_rules"></a> [ecr\_scanning\_rules](#input\_ecr\_scanning\_rules) | List of ECR scanning rules | `list(map(string))` | <pre>[<br>  {<br>    "filter": "*",<br>    "frequency": "SCAN_ON_PUSH"<br>  }<br>]</pre> | no |
 | <a name="input_enable_cloudtrail"></a> [enable\_cloudtrail](#input\_enable\_cloudtrail) | Enable AWS CloudTrail service | `bool` | `true` | no |
 | <a name="input_enable_config"></a> [enable\_config](#input\_enable\_config) | Enable AWS Config service | `bool` | `true` | no |
-| <a name="input_enable_ebs_baseline"></a> [enable\_ebs\_baseline](#input\_enable\_ebs\_baseline) | Boolean whether iam-baseline is enabled. | `bool` | `true` | no |
+| <a name="input_enable_ebs_baseline"></a> [enable\_ebs\_baseline](#input\_enable\_ebs\_baseline) | Boolean whether ebs-baseline is enabled. | `bool` | `true` | no |
 | <a name="input_enable_ecr_baseline"></a> [enable\_ecr\_baseline](#input\_enable\_ecr\_baseline) | Enable ECR image scanning | `bool` | `true` | no |
 | <a name="input_enable_firewall_manager"></a> [enable\_firewall\_manager](#input\_enable\_firewall\_manager) | Enable AWS Firewall Manager service | `bool` | `true` | no |
 | <a name="input_enable_guardduty"></a> [enable\_guardduty](#input\_enable\_guardduty) | Enable AWS GuardDuty service | `bool` | `true` | no |

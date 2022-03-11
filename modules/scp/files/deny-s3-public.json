@@ -1,0 +1,8 @@
+{
+    "Sid": "PreventS3PublicAccess",
+    "Action": [
+        "s3:PutAccountPublicAccessBlock"
+    ],
+    "Resource": "*",
+    "Effect": "Deny"
+}
