@@ -1,0 +1,3 @@
+
+https://aws-samples.github.io/aws-iam-permissions-guardrails/guardrails/scp-guardrails.html
+https://github.com/ScaleSec/terraform_aws_scp

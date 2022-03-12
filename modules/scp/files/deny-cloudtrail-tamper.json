@@ -6,8 +6,8 @@
       "Effect": "Deny",
       "Action": [
         "cloudtrail:DeleteTrail",
-        "cloudtrail:StopLogging",
         "cloudtrail:PutEventSelectors",
+        "cloudtrail:StopLogging",
         "cloudtrail:UpdateTrail"
       ],
       "Resource": [

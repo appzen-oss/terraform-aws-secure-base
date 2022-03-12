@@ -113,6 +113,14 @@ resource "aws_organizations_policy" "deny_s3_public" {
   type        = "SERVICE_CONTROL_POLICY"
   content     = file("${path.module}/files/deny-s3-public.json")
 }
+resource "aws_organizations_policy" "deny_s3_unsecure_requests" {
+  count       = local.enable && var.enable_s3 ? 1 : 0
+  name        = "deny_s3_unsecure_requests"
+  description = "Prevent S3 unsecured requests"
+  tags        = var.tags
+  type        = "SERVICE_CONTROL_POLICY"
+  content     = file("${path.module}/files/deny-s3-unsecure-requests.json")
+}
 resource "aws_organizations_policy" "require_s3_encryption" {
   count       = local.enable && var.enable_s3 ? 1 : 0
   name        = "require_s3_encryption"

@@ -6,8 +6,11 @@
       "Effect": "Deny",
       "Action": [
         "config:DeleteConfigRule",
+        "config:DeleteConfigurationAggregator",
         "config:DeleteConfigurationRecorder",
         "config:DeleteDeliveryChannel",
+        "config:DeleteEvaluationResults",
+        "config:DeleteRetentionConfiguration",
         "config:StopConfigurationRecorder"
       ],
       "Resource": "*"
