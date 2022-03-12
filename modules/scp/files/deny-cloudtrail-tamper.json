@@ -1,13 +1,18 @@
 {
-    "Sid": "PreventTamperingWithCloudTrail",
-    "Effect": "Deny",
-    "Action": [
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "PreventTamperingWithCloudTrail",
+      "Effect": "Deny",
+      "Action": [
         "cloudtrail:DeleteTrail",
         "cloudtrail:StopLogging",
         "cloudtrail:PutEventSelectors",
         "cloudtrail:UpdateTrail"
-    ],
-    "Resource": [
+      ],
+      "Resource": [
         "arn:aws:cloudtrail:*:*:trail/*"
-    ]
+      ]
+    }
+  ]
 }

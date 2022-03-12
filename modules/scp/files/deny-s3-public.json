@@ -1,8 +1,13 @@
 {
-    "Sid": "PreventS3PublicAccess",
-    "Action": [
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "PreventS3PublicAccess",
+      "Effect": "Deny",
+      "Action": [
         "s3:PutAccountPublicAccessBlock"
-    ],
-    "Resource": "*",
-    "Effect": "Deny"
+      ],
+      "Resource": "*"
+    }
+  ]
 }

@@ -2,10 +2,10 @@
   "Version": "2012-10-17",
   "Statement": [
     {
-      "Sid": "DenyOrgMemberLeaving",
+      "Sid": "DenyEbsDefaultEncryptionDisable",
       "Effect": "Deny",
       "Action": [
-        "organizations:LeaveOrganization"
+        "ec2:DisableEbsEncryptionByDefault"
       ],
       "Resource": [
         "*"

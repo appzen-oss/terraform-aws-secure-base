@@ -2,10 +2,10 @@
   "Version": "2012-10-17",
   "Statement": [
     {
-      "Sid": "DenyOrgMemberLeaving",
+      "Sid": "DenyAccessAnalyzerDisable",
       "Effect": "Deny",
       "Action": [
-        "organizations:LeaveOrganization"
+        "access-analyzer:DeleteAnalyzer"
       ],
       "Resource": [
         "*"

@@ -14,13 +14,18 @@ variable "enable" {
   type        = bool
   default     = true
 }
+variable "enable_access_analyzer" {
+  description = "Manage AWS IAM Access Analyzer SCP policies"
+  type        = bool
+  default     = true
+}
 variable "enable_cloudtrail" {
   description = "Manage AWS CloudTrail SCP policies"
   type        = bool
   default     = true
 }
 variable "enable_config" {
-  description = "Manage AWS Config  SCP policies"
+  description = "Manage AWS Config SCP policies"
   type        = bool
   default     = true
 }
@@ -46,6 +51,11 @@ variable "enable_iam" {
 }
 variable "enable_s3" {
   description = "Manage S3 SCP policies"
+  type        = bool
+  default     = true
+}
+variable "enable_securityhub" {
+  description = "Manage AWS Security Hub SCP policies"
   type        = bool
   default     = true
 }

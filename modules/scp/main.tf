@@ -5,6 +5,18 @@ locals {
   enable = var.enable && var.account_type == "master"
 }
 ### -----------------------
+### Access Analyzer
+### -----------------------
+resource "aws_organizations_policy" "deny_access_analyzer_disable" {
+  count       = local.enable && var.enable_access_analyzer ? 1 : 0
+  name        = "deny_access_analyzer_disable"
+  description = "Prevent IAM Access Analyzer from being disabled"
+  tags        = var.tags
+  type        = "SERVICE_CONTROL_POLICY"
+  content     = file("${path.module}/files/deny-access-analyzer-disable.json")
+}
+
+### -----------------------
 ### CloudTrail
 ### -----------------------
 resource "aws_organizations_policy" "deny_cloudtrail_disable" {
@@ -38,7 +50,14 @@ resource "aws_organizations_policy" "deny_config_modify" {
 ### -----------------------
 ### EBS
 ### -----------------------
-#   deny change default encryption
+resource "aws_organizations_policy" "deny_ebs_default_encryption_disable" {
+  count       = local.enable && var.enable_config ? 1 : 0
+  name        = "deny_ebs_default_encryption_disable"
+  description = "Prevent EC2 EBS default encyption from being disabled"
+  tags        = var.tags
+  type        = "SERVICE_CONTROL_POLICY"
+  content     = file("${path.module}/files/deny-ebs-default-encryption-disable.json")
+}
 ### -----------------------
 ### ECR
 ### -----------------------
@@ -101,4 +120,15 @@ resource "aws_organizations_policy" "require_s3_encryption" {
   tags        = var.tags
   type        = "SERVICE_CONTROL_POLICY"
   content     = file("${path.module}/files/require-s3-encryption.json")
+}
+### -----------------------
+### Security Hub
+### -----------------------
+resource "aws_organizations_policy" "deny_securityhub_disable" {
+  count       = local.enable && var.enable_securityhub ? 1 : 0
+  name        = "deny_securityhub_disable"
+  description = "Prevent Security Hub from being disabled"
+  tags        = var.tags
+  type        = "SERVICE_CONTROL_POLICY"
+  content     = file("${path.module}/files/deny-securityhub-disable.json")
 }
