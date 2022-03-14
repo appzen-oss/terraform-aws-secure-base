@@ -1,3 +1,17 @@
 
 https://aws-samples.github.io/aws-iam-permissions-guardrails/guardrails/scp-guardrails.html
 https://github.com/ScaleSec/terraform_aws_scp
+https://asecure.cloud/l/scp/
+https://summitroute.com/blog/2020/03/25/aws_scp_best_practices/
+https://globaldatanet.com/tech-blog/scp-best-practices
+https://d1.awsstatic.com/whitepapers/building_an_aws_perimeter.pdf
+
+
+Update all SCP to exclude role "arn:aws:iam::*:role/OrganizationAccountAccessRole" from deny policies
+As a variable??
+
+"Condition": {
+  "StringNotLike": {
+    "aws:PrincipalArn": "arn:aws:iam::*:role/OrganizationAccountAccessRole"
+  }
+}

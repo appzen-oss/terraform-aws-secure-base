@@ -91,6 +91,8 @@ resource "aws_organizations_policy" "deny_guardduty_modify" {
 #  type = "SERVICE_CONTROL_POLICY"
 #  content = file("${path.module}/files/deny-ecr-create-write.json")
 #}
+# TODO:
+#   deny user create
 ### -----------------------
 ### Organization
 ### -----------------------
