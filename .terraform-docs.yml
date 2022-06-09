@@ -1,4 +1,11 @@
+
+# https://terraform-docs.io/user-guide/configuration/
+
 formatter: markdown
 #settings:
 #  anchor: false
 #  html: false
+
+#sort:
+#  enabled: true
+#  by: required

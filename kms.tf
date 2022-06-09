@@ -2,7 +2,7 @@
 # Manage KMS keys
 
 # CloudTrail
-#   regional replicas ??
+#   key in region where S3 bucket is. Can be cross account
 # EBS
 #   regional replicas
 # S3
@@ -32,7 +32,7 @@
 #}
 
 # CloudTrail KMS policy
-# Allow access to all accounts and regions
+# Allow access to all accounts and regions - Not needed for org controlled trail
 #{
 #    "Sid": "Allow CloudTrail to encrypt logs",
 #    "Effect": "Allow",

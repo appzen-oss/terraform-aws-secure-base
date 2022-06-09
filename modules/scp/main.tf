@@ -86,13 +86,20 @@ resource "aws_organizations_policy" "deny_guardduty_modify" {
 #resource "aws_organizations_policy" "deny_iam_password_policy_modify" {
 #  count = local.enable && var.enable_iam ? 1 : 0
 #  name = "deny_iam_password_policy_modify"
-#  description = "Prevent ECR from being created or written too"
+#  description = "Prevent IAM password policy from being modified"
 #  tags = var.tags
 #  type = "SERVICE_CONTROL_POLICY"
-#  content = file("${path.module}/files/deny-ecr-create-write.json")
+#  content = file("${path.module}/files/deny-iam-password-policy-modify.json")
 #}
-# TODO:
-#   deny user create
+resource "aws_organizations_policy" "deny_iam_user_create" {
+  count       = local.enable && var.enable_iam ? 1 : 0
+  name        = "deny_iam_user_create"
+  description = "Prevent Users from being created"
+  tags        = var.tags
+  type        = "SERVICE_CONTROL_POLICY"
+  content     = file("${path.module}/files/deny-iam-user-create.json")
+}
+
 ### -----------------------
 ### Organization
 ### -----------------------
