@@ -7,15 +7,26 @@
 #   aws securityhub list-enabled-products-for-import
 
 cat <<VARHEADER
+
+# To build current version of this
+# scripts/build-var-products.sh > file
+
 variable "product_arns" {
   description = "Security Hub product integrations"
-  type = map
+  type        = map(any)
   default = {
 VARHEADER
 
-(for arn in $(aws securityhub describe-products | jq -r .Products[].ProductArn | cut -d: -f5- ); do
-  product=${arn##*/}
-  echo "    \"${product}\" = \"${arn}\""
+product_arns=$(aws securityhub describe-products | jq -r .Products[].ProductArn | cut -d: -f5- )
+max_len=0
+for arn in ${product_arns}; do
+  product=$(echo ${arn} | rev | cut -d/ -f-2 | rev)
+  [ ${#product} -gt ${max_len} ] && max_len=${#product}
+done
+(for arn in ${product_arns}; do
+  product=$(echo ${arn} | rev | cut -d/ -f-2 | rev)
+  spacing=$(( max_len - ${#product} + 1 ))
+  printf "    \"%s\" %${spacing}s \"%s\"\n" ${product} '=' ${arn}
 done) | sort
 
 cat <<VARFOOTER

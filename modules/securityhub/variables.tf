@@ -17,6 +17,14 @@ variable "enable" {
   default     = true
 }
 
+# Currently subscribed products
+# aws securityhub list-enabled-products-for-import
+variable "enable_products" {
+  description = "Subscribe Security Hub to Products"
+  type        = list(string)
+  default     = []
+}
+
 variable "security_administrator_account_id" {
   description = "AWS Security Administrator Account ID"
   type        = number

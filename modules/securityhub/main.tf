@@ -67,31 +67,17 @@ resource "aws_securityhub_organization_configuration" "self" {
 ## --------------------------------------------------------------------------------------------------
 ## Subscribe to 3rd party products
 ## --------------------------------------------------------------------------------------------------
-#resource "aws_securityhub_product_subscription" "products" {
-#  count = var.enable ? length(var.enable_product_arns) : 0
-#  product_arn = replace(var.enable_product_arns[count.index], "<REGION>", data.aws_region.current.name
-#  depends_on = [aws_securityhub_account.self]
-#}
 
 #resource "aws_securityhub_product_subscription" "example" {
 #  depends_on  = [aws_securityhub_account.self]
 #  product_arn = "arn:aws:securityhub:${data.aws_region.current.name}:733251395267:product/alertlogic/althreatmanagement"
 #}
 
-# aws securityhub list-enabled-products-for-import
-#variable "enable_products" {
-#  description = "Subscribe Security Hub to Products"
-#  type = list(string)
-#  default = []
-#}
-#
-#data "aws_region" "current" {}
-#
-#resource "aws_securityhub_product_subscription" "self" {
-#  count = var.enable ? length(var.enable_products) : 0
-#  depends_on  = [aws_securityhub_account.self]
-#  product_arn = format("arn:aws:securityhub:%s:%s",
-#    data.aws_region.current.name,
-#    var.product_arns[var.enable_products[count.index]]
-#  )
-#}
+resource "aws_securityhub_product_subscription" "self" {
+  count      = var.enable ? length(var.enable_products) : 0
+  depends_on = [aws_securityhub_account.self]
+  product_arn = format("arn:aws:securityhub:%s:%s",
+    data.aws_region.current.name,
+    var.product_arns[var.enable_products[count.index]]
+  )
+}
