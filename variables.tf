@@ -400,6 +400,15 @@ variable "force_destroy" {
 #}
 
 ### -----------------------------
+### Security Hub Settings
+### -----------------------------
+variable "securityhub_enable_products" {
+  description = "Subscribe Security Hub to Products"
+  type        = list(string)
+  default     = []
+}
+
+### -----------------------------
 ### Organization Settings
 ### -----------------------------
 # Policy Types

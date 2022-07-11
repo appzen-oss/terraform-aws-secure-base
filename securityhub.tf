@@ -8,6 +8,7 @@ module "securityhub_eu-west-1" {
     aws = aws.eu-west-1
   }
   account_type                      = var.account_type
+  enable_products                   = var.securityhub_enable_products
   security_administrator_account_id = var.security_administrator_account_id
 }
 
@@ -20,6 +21,7 @@ module "securityhub_us-east-1" {
     aws = aws.us-east-1
   }
   account_type                      = var.account_type
+  enable_products                   = var.securityhub_enable_products
   security_administrator_account_id = var.security_administrator_account_id
 }
 
@@ -32,5 +34,6 @@ module "securityhub_us-east-2" {
     aws = aws.us-east-2
   }
   account_type                      = var.account_type
+  enable_products                   = var.securityhub_enable_products
   security_administrator_account_id = var.security_administrator_account_id
 }
