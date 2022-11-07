@@ -91,11 +91,6 @@ variable "org_administrator_account_id" {
   type        = number
 }
 
-variable "org_administrator_account_id" {
-  description = "AWS Security Administrator Account ID"
-  type        = number
-}
-
 variable "security_administrator_account_id" {
   description = "AWS Security Administrator Account ID"
   type        = number
