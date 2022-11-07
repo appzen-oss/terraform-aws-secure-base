@@ -68,6 +68,24 @@ resource "aws_guardduty_detector" "self" {
   tags = var.tags
 }
 
+resource "aws_organizations_organization" "self" {
+  aws_service_access_principals = ["guardduty.amazonaws.com"]
+  feature_set                   = "ALL"
+}
+
+# Security account to manage all members
+resource "aws_guardduty_organization_admin_account" "self" {
+  count       = var.security_administrator_account_id == data.aws_caller_identity.current.account_id ? 1 : 0
+  depends_on  = [aws_organizations_organization.self]
+  admin_account_id = var.security_administrator_account_id
+}
+
+resource "aws_guardduty_detector" "member" {
+  count       = var.security_administrator_account_id == data.aws_caller_identity.current.account_id ? 1 : 0
+  provider    = aws.dev
+  enable      = true
+}
+
 # Regional - Administrator
 resource "aws_guardduty_organization_configuration" "self" {
   count       = var.enable && var.account_type == "administrator" ? 1 : 0

@@ -14,8 +14,8 @@
 
 #  unrecognized service principal
 # Organization Master - Regional
-resource "aws_organizations_delegated_administrator" "inspector2" {
-  count             = var.enable && var.account_type == "master" ? 1 : 0
-  account_id        = var.security_administrator_account_id
-  service_principal = "inspector2.amazonaws.com"
-}
+#resource "aws_organizations_delegated_administrator" "inspector2" {
+#  count             = var.enable && var.account_type == "master" ? 1 : 0
+#  account_id        = var.org_administrator_account_id
+#  service_principal = "inspector2.amazonaws.com"
+#}
