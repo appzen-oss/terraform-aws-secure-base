@@ -74,12 +74,6 @@ resource "aws_organizations_organization" "self" {
 }
 
 # Security account to manage all members
-resource "aws_guardduty_detector" "member" {
-  count       = var.security_administrator_account_id == data.aws_caller_identity.current.account_id ? 1 : 0
-  provider    = aws.dev
-  enable      = true
-}
-
 # Regional - Administrator
 resource "aws_guardduty_organization_configuration" "self" {
   count       = var.enable && var.account_type == "administrator" ? 1 : 0
