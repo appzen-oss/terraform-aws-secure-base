@@ -141,8 +141,8 @@ variable "ecr_scan_type" {
     )
     error_message = "Must be one of: BASIC, ENHANCED."
   }
-  default = "BASIC"
-  #default = "ENHANCED" # Need inspector2 to collect data
+  #default = "BASIC"
+  default = "ENHANCED" # Need inspector2 to collect data
 }
 
 ### -----------------------------
