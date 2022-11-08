@@ -55,11 +55,11 @@ variable "enable_iam_access_analyzer" {
   type        = bool
   default     = true
 }
-#variable "enable_inspector" {
-#  description = "Enable AWS Inspector"
-#  type        = bool
-#  default     = false
-#}
+variable "enable_inspector" {
+  description = "Enable AWS Inspector"
+  type        = bool
+  default     = true
+}
 #variable "enable_ram" {
 #  description = "Enable AWS RAM service"
 #  type        = bool
