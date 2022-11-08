@@ -68,10 +68,10 @@ resource "aws_guardduty_detector" "self" {
   tags = var.tags
 }
 
-resource "aws_organizations_organization" "self" {
-  aws_service_access_principals = ["guardduty.amazonaws.com"]
-  feature_set                   = "ALL"
-}
+#resource "aws_organizations_organization" "self" {
+#  aws_service_access_principals = ["guardduty.amazonaws.com"]
+#  feature_set                   = "ALL"
+#}
 
 # Security account to manage all members
 # Regional - Administrator
