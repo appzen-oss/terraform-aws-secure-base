@@ -19,3 +19,8 @@
 #  account_id        = var.org_administrator_account_id
 #  service_principal = "inspector2.amazonaws.com"
 #}
+
+resource "aws_inspector2_delegated_admin_account" "self" {
+  count      = var.enable ? 1 : 0
+  account_id = var.security_administrator_account_id
+}
