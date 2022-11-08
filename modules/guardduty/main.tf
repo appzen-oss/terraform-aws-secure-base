@@ -55,9 +55,10 @@ resource "aws_guardduty_organization_admin_account" "self" {
 
 # aws guardduty get-detector --detector-id
 # aws guardduty list-detectors
-# Regional - Administrator
+
+# Add detector only on master, member is administered by master
 resource "aws_guardduty_detector" "self" {
-  count                        = var.enable && var.account_type == "administrator" ? 1 : 0
+  count                        = var.enable && var.account_type == "master" ? 1 : 0
   enable                       = true
   finding_publishing_frequency = var.finding_publishing_frequency
   datasources {
@@ -68,10 +69,6 @@ resource "aws_guardduty_detector" "self" {
   tags = var.tags
 }
 
-#resource "aws_organizations_organization" "self" {
-#  aws_service_access_principals = ["guardduty.amazonaws.com"]
-#  feature_set                   = "ALL"
-#}
 
 # Security account to manage all members
 # Regional - Administrator
