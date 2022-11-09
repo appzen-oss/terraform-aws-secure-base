@@ -56,9 +56,9 @@ resource "aws_guardduty_organization_admin_account" "self" {
 # aws guardduty get-detector --detector-id
 # aws guardduty list-detectors
 
-# Add detector only on master, member is administered by master
+# Add detector only on delegated admin
 resource "aws_guardduty_detector" "self" {
-  count                        = var.enable && var.account_type == "master" ? 1 : 0
+  count                        = var.enable && data.aws_caller_identity.current.account_id == var.security_administrator_account_id ? 1 : 0
   enable                       = true
   finding_publishing_frequency = var.finding_publishing_frequency
   datasources {
