@@ -58,7 +58,7 @@ resource "aws_guardduty_organization_admin_account" "self" {
 
 # Add detector only on delegated admin
 resource "aws_guardduty_detector" "self" {
-  count                        = var.enable && data.aws_caller_identity.current.account_id == var.security_administrator_account_id ? 1 : 0
+  count                        = var.enable && var.account_type == "administrator" ? 1 : 0
   enable                       = true
   finding_publishing_frequency = var.finding_publishing_frequency
   datasources {
