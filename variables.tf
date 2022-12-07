@@ -416,6 +416,16 @@ variable "config_region" {
   default     = "us-east-1"
 }
 
+variable "config_create_iam_role" {
+  description = "Config SNS topic"
+  default     = true
+}
+
+variable "config_create_sns_topic" {
+  description = "Config SNS topic"
+  default     = true
+}
+
 ### -----------------------------
 ### Security Hub Settings
 ### -----------------------------

@@ -3,8 +3,8 @@ module "config" {
   source = "cloudposse/config/aws"
   version     = "0.16.0"
 
-  create_sns_topic = true
-  create_iam_role  = true
+  create_sns_topic = var.config_create_sns_topic
+  create_iam_role  = var.config_create_iam_role
 
   global_resource_collector_region  = var.config_region
   s3_bucket_id                      = var.config_s3_bucket_id
