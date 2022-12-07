@@ -405,6 +405,18 @@ variable "force_destroy" {
 #}
 
 ### -----------------------------
+### Config
+### -----------------------------
+variable "config_s3_bucket_id" {
+  description = "Config log S3 bucket"
+}
+
+variable "config_region" {
+  description = "Config log S3 bucket"
+  default     = "us-east-1"
+}
+
+### -----------------------------
 ### Security Hub Settings
 ### -----------------------------
 variable "securityhub_enable_products" {
