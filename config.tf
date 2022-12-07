@@ -1,5 +1,5 @@
 module "config" {
-  for_each = var.enable_config == true ? toset([]) : toset(data.aws_regions.enabled.names)
+  for_each = var.enable_config == true ? toset(data.aws_regions.enabled.names) : toset([])
   source = "cloudposse/config/aws"
   version     = "0.16.0"
 
