@@ -1,5 +1,6 @@
 module "config" {
-  for_each = var.enable_config == true ? toset(data.aws_regions.enabled.names) : toset([])
+  for_each = var.enable_config == true ? toset(["us-east-1"]) : toset([])
+  #for_each = var.enable_config == true ? toset(data.aws_regions.enabled.names) : toset([])
   source = "cloudposse/config/aws"
   version     = "0.16.0"
 
