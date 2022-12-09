@@ -1,9 +1,9 @@
 module "config-us-east-1" {
-  for_each    = var.enable_config == true ? toset(["us-east-1"]) : toset([])
-  #count       = var.enable_config && contains(var.target_regions, each.value) ? 1 : 0
+  #for_each    = var.enable_config == true ? toset(["us-east-1"]) : toset([])
+  count       = var.enable_config && contains(var.target_regions, "us-east-1") ? 1 : 0
   source      = "./modules/config"
   depends_on  = [aws_organizations_organization.self]
-  enable      = var.enable_config && contains(var.target_regions, each.value)
+  enable      = var.enable_config && contains(var.target_regions, "us-east-1")
 /*
   providers = {
     #aws = aws.us-east-1
