@@ -176,7 +176,7 @@ resource "aws_config_configuration_recorder" "recorder" {
 # Each account & region
 resource "aws_config_delivery_channel" "bucket" {
   count          = var.enable ? 1 : 0
-  name           = var.delivery_channel_name == "" ? "default" " var.delivery_channel_name
+  name           = var.delivery_channel_name == "" ? "default" : var.delivery_channel_name
   s3_bucket_name = var.s3_bucket_name
   s3_key_prefix  = var.s3_key_prefix
   #s3_kms_key_arn =
