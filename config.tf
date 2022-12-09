@@ -1,3 +1,27 @@
+module "config-us-east-1" {
+  for_each    = var.enable_config == true ? toset(["us-east-1"]) : toset([])
+  #count       = var.enable_config && contains(var.target_regions, each.value) ? 1 : 0
+  source      = "./modules/config"
+  depends_on  = [aws_organizations_organization.self]
+  enable      = var.enable_config && contains(var.target_regions, each.value)
+/*
+  providers = {
+    #aws = aws.us-east-1
+    aws = aws.home
+  }
+*/
+  account_type                      = var.account_type
+  delivery_channel_name             = ""
+  recorder_name                     = ""
+  s3_bucket_name                    = "appzen-log-infra-us-east-1"
+  #delivery_channel_name             = var.config_delivery_channel_name
+  #recorder_name                     = var.config_recorder_name
+  #s3_bucket_name                    = var.config_s3_bucket_name
+  security_administrator_account_id = var.security_administrator_account_id
+}
+
+/*
+  #count       = var.enable_config && contains(var.target_regions, each.value) ? 1 : 0
 module "config" {
   for_each = var.enable_config == true ? toset(["us-east-1"]) : toset([])
   #for_each = var.enable_config == true ? toset(data.aws_regions.enabled.names) : toset([])
@@ -22,3 +46,4 @@ module "config" {
     }
   }
 }
+*/

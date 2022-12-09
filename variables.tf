@@ -48,7 +48,8 @@ variable "enable_firewall_manager" {
 variable "enable_guardduty" {
   description = "Enable AWS GuardDuty service"
   type        = bool
-  default     = true
+  default     = false
+  #default     = true
 }
 variable "enable_iam_access_analyzer" {
   description = "Enable AWS IAM Access Analyzer"
@@ -87,7 +88,7 @@ variable "enable_securityhub" {
 #}
 
 variable "org_administrator_account_id" {
-  description = "AWS Security Administrator Account ID"
+  description = "AWS Organization Account ID"
   type        = number
 }
 
@@ -404,6 +405,7 @@ variable "force_destroy" {
 #  default     = ""
 #}
 
+/*
 ### -----------------------------
 ### Config
 ### -----------------------------
@@ -425,6 +427,7 @@ variable "config_create_sns_topic" {
   description = "Config SNS topic"
   default     = true
 }
+*/
 
 ### -----------------------------
 ### Security Hub Settings
