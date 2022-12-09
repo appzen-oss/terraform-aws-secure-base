@@ -77,8 +77,9 @@ resource "aws_organizations_delegated_administrator" "config" {
 ### Aggregator
 ### Primary region only - Administrator
 ### ====================================================
-resource "aws_iam_role" "organization" {
-  count              = var.enable && local.is_administrator && local.is_aggregation_region ? 1 : 0
+resource "aws_iam_role" "default" {
+  count              = var.enable ? 1 : 0
+  #count              = var.enable && local.is_administrator && local.is_aggregation_region ? 1 : 0
   name               = var.org_aggregator_role_name
   assume_role_policy = <<EOF
 {
@@ -99,8 +100,8 @@ EOF
 
 resource "aws_iam_role_policy_attachment" "organization" {
   count      = var.enable && local.is_administrator && local.is_aggregation_region ? 1 : 0
-  depends_on = [aws_iam_role.organization]
-  role       = aws_iam_role.organization[0].name
+  depends_on = [aws_iam_role.default]
+  role       = aws_iam_role.default[0].name
   policy_arn = "arn:aws:iam::aws:policy/service-role/AWSConfigRoleForOrganizations"
 }
 
@@ -110,7 +111,7 @@ resource "aws_config_configuration_aggregator" "organization" {
   name       = var.org_aggregator_name
   organization_aggregation_source {
     all_regions = true
-    role_arn    = aws_iam_role.organization[0].arn
+    role_arn    = aws_iam_role.default[0].arn
   }
   tags = var.tags
 }
@@ -163,7 +164,7 @@ resource "aws_config_configuration_aggregator" "organization" {
 resource "aws_config_configuration_recorder" "recorder" {
   count    = var.enable ? 1 : 0
   name     = var.recorder_name == "" ? "default" : var.recorder_name
-  role_arn = var.iam_role_arn
+  role_arn = aws_iam_role.default[0].arn
   recording_group {
     all_supported                 = true
     include_global_resource_types = var.include_global_resource_types
