@@ -68,7 +68,7 @@ locals {
 ### Regional - Organization Master
 ### ====================================================
 resource "aws_organizations_delegated_administrator" "config" {
-  count             = var.enable && var.account_type == "master" ? 1 : 0
+  count             = var.enable && var.account_type == "master" && local.is_aggregation_region ? 1 : 0
   account_id        = var.security_administrator_account_id
   service_principal = "config.amazonaws.com"
 }
