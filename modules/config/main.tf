@@ -78,7 +78,7 @@ resource "aws_organizations_delegated_administrator" "config" {
 ### Primary region only - Administrator
 ### ====================================================
 resource "aws_iam_role" "default" {
-  count              = var.enable && local.is_administrator && local.is_aggregation_region ? 1 : 0
+  count              = var.enable && local.is_aggregation_region ? 1 : 0
   name               = var.org_aggregator_role_name
   assume_role_policy = <<EOF
 {
