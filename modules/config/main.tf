@@ -78,8 +78,7 @@ resource "aws_organizations_delegated_administrator" "config" {
 ### Primary region only - Administrator
 ### ====================================================
 resource "aws_iam_role" "default" {
-  count              = var.enable ? 1 : 0
-  #count              = var.enable && local.is_administrator && local.is_aggregation_region ? 1 : 0
+  count              = var.enable && local.is_administrator && local.is_aggregation_region ? 1 : 0
   name               = var.org_aggregator_role_name
   assume_role_policy = <<EOF
 {
@@ -164,7 +163,7 @@ resource "aws_config_configuration_aggregator" "organization" {
 resource "aws_config_configuration_recorder" "recorder" {
   count    = var.enable ? 1 : 0
   name     = var.recorder_name == "" ? "default" : var.recorder_name
-  role_arn = aws_iam_role.default[0].arn
+  role_arn = var.iam_role_arn == "" ? "arn:aws:iam::${data.aws_caller_identity.current.id}:role/${var.org_aggregator_role_name}" : var.iam_role_arn
   recording_group {
     all_supported                 = true
     include_global_resource_types = var.include_global_resource_types
