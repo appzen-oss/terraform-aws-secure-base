@@ -78,7 +78,7 @@ variable "s3_bucket_name" {
 variable "s3_key_prefix" {
   description = ""
   type        = string
-  default     = ""
+  default     = "config"
 }
 variable "sns_topic_kms_master_key_id" {
   description = ""
