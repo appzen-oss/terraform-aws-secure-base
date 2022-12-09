@@ -13,6 +13,7 @@ variable "account_type" {
 variable "delivery_channel_name" {
   description = ""
   type        = string
+  default     = ""
 }
 
 variable "delivery_frequency" {
