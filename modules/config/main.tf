@@ -59,7 +59,8 @@
 # NOT for org: aws configservice put-aggregation-authorization --authorized-account-id  AccountID --authorized-aws-region Region
 
 locals {
-  is_aggregation_region = var.primary_region == data.aws_region.current.name
+  primary_region        = var.primary_region == "" ? "us-east-1" : var.primary_region
+  is_aggregation_region = local.primary_region == data.aws_region.current.name
   is_administrator      = var.account_type == "administrator"
 }
 
