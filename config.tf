@@ -11,12 +11,7 @@ module "config-us-east-1" {
   }
 */
   account_type                      = var.account_type
-  delivery_channel_name             = var.delivery_channel_name == "" ? "default" : var.delivery_channel_name
-  recorder_name                     = var.recorder_name == "" ? "default" : var.recorder_name
   s3_bucket_name                    = "appzen-log-infra-us-east-1"
-  #delivery_channel_name             = var.config_delivery_channel_name
-  #recorder_name                     = var.config_recorder_name
-  #s3_bucket_name                    = var.config_s3_bucket_name
   security_administrator_account_id = var.security_administrator_account_id
 }
 

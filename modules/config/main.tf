@@ -162,7 +162,7 @@ resource "aws_config_configuration_aggregator" "organization" {
 # Each account & region
 resource "aws_config_configuration_recorder" "recorder" {
   count    = var.enable ? 1 : 0
-  name     = var.recorder_name
+  name     = var.recorder_name == "" ? "default" : var.recorder_name
   role_arn = var.iam_role_arn
   recording_group {
     all_supported                 = true
@@ -176,7 +176,7 @@ resource "aws_config_configuration_recorder" "recorder" {
 # Each account & region
 resource "aws_config_delivery_channel" "bucket" {
   count          = var.enable ? 1 : 0
-  name           = var.delivery_channel_name
+  name           = var.delivery_channel_name == "" ? "default" " var.delivery_channel_name
   s3_bucket_name = var.s3_bucket_name
   s3_key_prefix  = var.s3_key_prefix
   #s3_kms_key_arn =

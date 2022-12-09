@@ -68,6 +68,7 @@ variable "org_aggregator_role_name" {
 variable "recorder_name" {
   description = ""
   type        = string
+  default     = ""
 }
 variable "s3_bucket_name" {
   description = ""
