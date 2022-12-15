@@ -62,6 +62,7 @@ locals {
   primary_region        = var.primary_region == "" ? "us-east-1" : var.primary_region
   is_aggregation_region = local.primary_region == data.aws_region.current.name
   is_administrator      = var.account_type == "administrator"
+  is_master             = var.account_type == "master"
 }
 
 ### ====================================================
@@ -69,7 +70,9 @@ locals {
 ### Regional - Organization Master
 ### ====================================================
 resource "aws_organizations_delegated_administrator" "config" {
-  count             = var.enable && var.account_type == "master" && local.is_aggregation_region ? 1 : 0
+  #count             = var.enable ? 1 : 0
+  count             = var.enable && local.is_master && var.primary_region == var.current_region ? 1 : 0
+  #count             = var.enable && local.is_master && local.is_aggregation_region ? 1 : 0
   account_id        = var.security_administrator_account_id
   service_principal = "config.amazonaws.com"
 }
@@ -79,7 +82,7 @@ resource "aws_organizations_delegated_administrator" "config" {
 ### Primary region only - Administrator
 ### ====================================================
 resource "aws_iam_role" "default" {
-  count              = var.enable && local.is_aggregation_region ? 1 : 0
+  count              = var.enable && var.primary_region == var.current_region ? 1 : 0
   name               = var.org_aggregator_role_name
   assume_role_policy = <<EOF
 {
@@ -99,14 +102,14 @@ EOF
 }
 
 resource "aws_iam_role_policy_attachment" "organization" {
-  count      = var.enable && local.is_administrator && local.is_aggregation_region ? 1 : 0
+  count      = var.enable && local.is_administrator && var.primary_region == var.current_region ? 1 : 0
   depends_on = [aws_iam_role.default]
   role       = aws_iam_role.default[0].name
   policy_arn = "arn:aws:iam::aws:policy/service-role/AWSConfigRoleForOrganizations"
 }
 
 resource "aws_config_configuration_aggregator" "organization" {
-  count      = var.enable && local.is_administrator && local.is_aggregation_region ? 1 : 0
+  count      = var.enable && local.is_master && var.primary_region == var.current_region ? 1 : 0
   depends_on = [aws_iam_role_policy_attachment.organization]
   name       = var.org_aggregator_name
   organization_aggregation_source {
@@ -115,6 +118,19 @@ resource "aws_config_configuration_aggregator" "organization" {
   }
   tags = var.tags
 }
+
+/*
+resource "aws_config_configuration_aggregator" "member" {
+  count      = var.enable && not local.is_master ? 1 : 0
+  depends_on = [aws_iam_role_policy_attachment.organization]
+  name       = var.org_aggregator_name
+  account_aggregation_source {
+    account_ids = data.aws_organizations_organization.current.accounts[*].id
+    all_regions = true
+  }
+  tags = var.tags
+}
+*/
 
 ### ====================================================
 ### AWS Config recorder and let it publish results and send notifications.

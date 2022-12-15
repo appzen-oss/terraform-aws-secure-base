@@ -19,3 +19,8 @@ output "s3_bucket_region_name_map" {
   description = "Map of regions and S3 names"
   value       = local.s3_bucket_region_name_map
 }
+
+output "org_nonmaster" {
+  description = "Map of regions and S3 names"
+  value       = data.aws_organizations_organization.current.non_master_accounts
+}

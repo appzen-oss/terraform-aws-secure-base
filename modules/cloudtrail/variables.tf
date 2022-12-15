@@ -41,14 +41,27 @@ variable "is_organization_trail" {
   default     = true
 }
 
+variable "kms_key_arn" {
+  description = "KMS cloudtrail encrypt at rest ARN"
+  type        = string
+  default     = ""
+}
+
 variable "name" {
   description = "CloudTrail name"
   type        = string
 }
 
+variable "cloudtrail_s3_bucket" {
+  description = "S3 bucket name for CloudTrail logs"
+  type        = string
+  default     = ""
+}
+
 variable "s3_bucket_name" {
   description = "S3 bucket name for CloudTrail logs"
   type        = string
+  default     = ""
 }
 
 variable "s3_key_prefix" {

@@ -27,7 +27,7 @@
 module "cloudtrail" {
   #ts:skip=AC_AWS_0448 Multi Region is enabled. Not work with Org?
   source  = "appzen-oss/cloudtrail/aws"
-  version = "0.21.1"
+  #version = "0.21.1"
 
   name                          = var.name
   enable_log_file_validation    = var.enable_log_file_validation
@@ -36,6 +36,7 @@ module "cloudtrail" {
   is_organization_trail         = var.is_organization_trail
   insight_selector              = var.insight_selector
   enable_logging                = var.enable_logging
+  #s3_bucket_name                = "appzen-log-infra-us-east-1"
   s3_bucket_name                = var.s3_bucket_name
   s3_key_prefix                 = var.s3_key_prefix
   tags                          = var.tags

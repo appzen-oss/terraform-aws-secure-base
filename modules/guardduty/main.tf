@@ -26,6 +26,10 @@
 # aws guardduty create-sample-findings
 # aws guardduty create-threat-intel-set
 
+#locals {
+#  guardduty_disabled  = data.aws_guardduty_detector.current.status != "ENABLED"
+#}
+
 # for each region
 # detector_id=$(aws guardduty list-detectors --region ${aws_region} --query DetectorIds | jq -r .[0])
 # terraform import -var-file=environments/${env}/env.tfvars module.guardduty-${aws_region}.aws_guardduty_detector.self[0] ${detector_id}
@@ -58,8 +62,8 @@ resource "aws_guardduty_organization_admin_account" "self" {
 
 # Add detector only on delegated admin
 resource "aws_guardduty_detector" "self" {
-  count                        = var.enable ? 1 : 0
   #count                        = var.enable && var.account_type == "administrator" ? 1 : 0
+  count                        = var.enable && var.account_type == "administrator" ? 1 : 0
   enable                       = true
   finding_publishing_frequency = var.finding_publishing_frequency
   datasources {

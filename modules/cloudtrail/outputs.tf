@@ -12,3 +12,8 @@ output "cloudtrail_arn" {
   value       = module.cloudtrail.cloudtrail_arn
   description = "The Amazon Resource Name of the trail"
 }
+
+output "s3_bucket_name" {
+  value       = var.s3_bucket_name
+  description = "S3 bucket"
+}

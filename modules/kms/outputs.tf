@@ -3,10 +3,25 @@
 ### KMS Key
 ### -------------------
 
+## Cloudposse output https://github.com/cloudposse/terraform-aws-kms-key#outputs
 output "alias_arn" {
   description = "KMS Alias ARN"
-  value       = one(aws_kms_alias.self.*.arn)
+  value       = module.kms_key.alias_arn
 }
+output "alias_name" {
+  description = "KMS Alias Name"
+  value       = module.kms_key.alias_name
+}
+output "key_arn" {
+  description = "KMS Key ARN"
+  value       = module.kms_key.key_arn
+}
+output "key_id" {
+  description = "KMS Key ID"
+  value       = module.kms_key.key_id
+}
+
+/*
 output "alias_target_key_arn" {
   description = "KMS Alias target key ARN"
   value       = one(aws_kms_alias.self.*.target_key_arn)
@@ -52,3 +67,4 @@ output "replica_key_id" {
   description = "Replica KMS key ID"
   value       = one(aws_kms_replica_key.self.*.key_id)
 }
+*/

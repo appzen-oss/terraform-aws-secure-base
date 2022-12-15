@@ -1,6 +1,7 @@
-#data "aws_caller_identity" "current" {}
+data "aws_caller_identity" "current" {}
 #data "aws_iam_account_alias" "current" {}
 #data "aws_region" "current" {}
+data "aws_organizations_organization" "current" {}
 
 data "aws_regions" "enabled" {
   all_regions = true

@@ -48,8 +48,7 @@ variable "enable_firewall_manager" {
 variable "enable_guardduty" {
   description = "Enable AWS GuardDuty service"
   type        = bool
-  default     = false
-  #default     = true
+  default     = true
 }
 variable "enable_iam_access_analyzer" {
   description = "Enable AWS IAM Access Analyzer"
@@ -58,6 +57,11 @@ variable "enable_iam_access_analyzer" {
 }
 variable "enable_inspector" {
   description = "Enable AWS Inspector"
+  type        = bool
+  default     = true
+}
+variable "enable_kms" {
+  description = "Enable KMS at org level for CloudTrail and other services"
   type        = bool
   default     = true
 }
@@ -353,11 +357,18 @@ variable "cloudtrail_is_organization_trail" {
   default     = true
 }
 
+variable "cloudtrail_kms_key_arn" {
+  description = "CloudTrail trail name"
+  type        = string
+  default     = ""
+}
+
 variable "cloudtrail_name" {
   description = "CloudTrail trail name"
   type        = string
   default     = "org"
 }
+
 variable "cloudtrail_s3_bucket" {
   description = "CloudTrail S3 bucket"
   type        = string

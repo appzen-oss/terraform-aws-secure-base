@@ -50,10 +50,15 @@ variable "include_global_resource_types" {
   type        = bool
   default     = false
 }
-variable "primary_region" {
+variable "current_region" {
   description = ""
   type        = string
   default     = ""
+}
+variable "primary_region" {
+  description = ""
+  type        = string
+  default     = "us-east-1"
 }
 variable "org_aggregator_name" {
   description = "Name of the organization aggregator"

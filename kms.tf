@@ -9,27 +9,56 @@
 #
 # SNS
 
-#module "kms-cloudtrail" {
-#  source                      = "./modules/kms"
-#  count                       = var.enable_kms && contains(var.target_regions, "us-east-1") ? 1 : 0
-#  enable                      = var.enable_kms && contains(var.target_regions, "us-east-1")
-#  #alias                       = "appzen/cloudtrail"
-#  #customer_master_key_spec    =
-#  #deletion_window_in_days     = 30
-#  #description                 =
-#  #enable_key_rotation         =
-#  #key_usage                   =
-#  #multi_region                = false
-#  #policy                      =
-#  #replica_deletion_window_in_days =
-#  #replica                     = false
-#  #replica_policy              =
-#  tags                        = var.tags
-#  providers = {
-#    aws                 = aws.us-east-1
-#    aws.primary_kms_key = aws.us-east-1
-#  }
-#}
+module "kms-cloudtrail" {
+  count                       = var.enable_cloudtrail && var.account_type == "master" && contains(var.target_regions, "us-east-1") ? 1 : 0
+  #count                       = var.enable_kms && contains(var.target_regions, "us-east-1") ? 1 : 0
+  source                      = "./modules/kms"
+  enable                      = var.enable_kms && contains(var.target_regions, "us-east-1")
+  alias                       = "alias/org_cloudtrail"
+  name                        = "org_cloudtrail"
+  deletion_window_in_days     = 7
+  description                 = "Appzen Org cloudtrail KMS multregion and multiaccount"
+  enable_key_rotation         = true
+  multi_region                = true
+  policy                  = jsonencode(
+    {
+      "Statement" : [
+        {
+          "Sid": "Enable IAM User Permissions",
+          "Effect": "Allow",
+          "Principal": {
+              "AWS": "arn:aws:iam::${data.aws_caller_identity.current.id}:root"
+          },
+          "Action": "kms:*",
+          "Resource": "*"
+        },
+        {
+          "Sid": "Allow an external account to use this KMS key",
+          "Effect": "Allow",
+          "Principal": {
+              "AWS": local.non_master_account_arn
+          },
+          "Action": [
+              "kms:Encrypt",
+              "kms:Decrypt",
+              "kms:ReEncrypt*",
+              "kms:GenerateDataKey*",
+              "kms:DescribeKey"
+          ],
+          "Resource": "*"
+        }
+      ]
+    }
+  )
+  #replica_deletion_window_in_days =
+  #replica                     = false
+  #replica_policy              =
+  tags                        = var.tags
+  providers = {
+    aws                 = aws.us-east-1
+    aws.primary_kms_key = aws.us-east-1
+  }
+}
 
 # CloudTrail KMS policy
 # Allow access to all accounts and regions - Not needed for org controlled trail

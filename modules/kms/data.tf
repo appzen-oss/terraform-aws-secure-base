@@ -1,4 +1,6 @@
 #data "aws_region" "current" {}
+data "aws_caller_identity" "current" {}
+data "aws_organizations_organization" "current" {}
 
 ### Replica KMS Key = Non-primary Regions
 data "aws_kms_key" "primary" {
