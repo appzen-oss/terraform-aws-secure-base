@@ -63,7 +63,8 @@ variable "enable_inspector" {
 variable "enable_kms" {
   description = "Enable KMS at org level for CloudTrail and other services"
   type        = bool
-  default     = true
+  # Disabled on purpose as policy always forces a destroy and recreate"
+  default     = false
 }
 #variable "enable_ram" {
 #  description = "Enable AWS RAM service"
@@ -90,16 +91,6 @@ variable "enable_securityhub" {
 #  type        = bool
 #  default     = true
 #}
-
-variable "org_administrator_account_id" {
-  description = "AWS Organization Account ID"
-  type        = number
-}
-
-variable "security_administrator_account_id" {
-  description = "AWS Security Administrator Account ID"
-  type        = number
-}
 
 variable "tags" {
   description = "Specifies object tags key and value. This applies to all resources created by this module."
@@ -416,29 +407,13 @@ variable "force_destroy" {
 #  default     = ""
 #}
 
-/*
 ### -----------------------------
 ### Config
 ### -----------------------------
-variable "config_s3_bucket_id" {
-  description = "Config log S3 bucket"
+variable "config_s3_key_prefix" {
+  description = "Config log S3 bucket prefix"
+  default     = "config"
 }
-
-variable "config_region" {
-  description = "Config log S3 bucket"
-  default     = "us-east-1"
-}
-
-variable "config_create_iam_role" {
-  description = "Config SNS topic"
-  default     = true
-}
-
-variable "config_create_sns_topic" {
-  description = "Config SNS topic"
-  default     = true
-}
-*/
 
 ### -----------------------------
 ### Security Hub Settings
@@ -452,6 +427,38 @@ variable "securityhub_enable_products" {
 ### -----------------------------
 ### Organization Settings
 ### -----------------------------
+variable "org_kms_arn" {
+  description = "Organization KMS arn"
+  type        = string
+  default     = ""
+}
+
+variable "org_administrator_account_id" {
+  description = "AWS Organization Account ID"
+  type        = number
+}
+
+variable "security_administrator_account_id" {
+  description = "AWS Security Administrator Account ID"
+  type        = number
+}
+
+variable "log_administrator_account_id" {
+  description = "AWS Log Administrator Account ID"
+  type        = number
+}
+
+variable "log_s3_bucket" {
+  description = "AWS log s3 bucket"
+  type        = string
+}
+
+variable "org_primary_region" {
+  description = "AWS primary region"
+  type        = string
+  default     = "us-east-1"
+}
+
 # Policy Types
 #variable "enable_org_policy_aiservices" {
 #  description = "Enable organization policy type for AI services opt-out"

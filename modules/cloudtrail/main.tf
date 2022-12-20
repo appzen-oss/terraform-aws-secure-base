@@ -36,7 +36,7 @@ module "cloudtrail" {
   is_organization_trail         = var.is_organization_trail
   insight_selector              = var.insight_selector
   enable_logging                = var.enable_logging
-  #s3_bucket_name                = "appzen-log-infra-us-east-1"
+  kms_key_arn                   = var.kms_key_arn
   s3_bucket_name                = var.s3_bucket_name
   s3_key_prefix                 = var.s3_key_prefix
   tags                          = var.tags

@@ -1,5 +1,37 @@
-
 # Manage KMS keys
+
+locals {
+  non_master_account_arn  = data.aws_organizations_organization.current.non_master_accounts == null ? [] : [ for id in data.aws_organizations_organization.current.non_master_accounts[*].id : "arn:aws:iam::${id}:root" ]
+}
+
+data "aws_iam_policy_document" "kms_share" {
+  statement {
+    actions     = ["kms:*"]
+    sid         = "Enable IAM User Permissions"
+    effect      = "Allow"
+    principals  { 
+      type        = "AWS"
+      identifiers = ["arn:aws:iam::${data.aws_caller_identity.current.id}:root"]
+    }
+    resources   = ["*"]
+  }
+  statement {
+    sid         = "Allow an external account to use this KMS key"
+    effect      = "Allow"
+    principals  {
+      type        = "AWS"
+      identifiers = local.non_master_account_arn
+    }
+    actions     = [
+      "kms:Encrypt",
+      "kms:Decrypt",
+      "kms:ReEncrypt*",
+      "kms:GenerateDataKey*",
+      "kms:DescribeKey"
+    ]
+    resources   = ["*"]
+  }
+}
 
 # CloudTrail
 #   key in region where S3 bucket is. Can be cross account
@@ -10,7 +42,7 @@
 # SNS
 
 module "kms-cloudtrail" {
-  count                       = var.enable_cloudtrail && var.account_type == "master" && contains(var.target_regions, "us-east-1") ? 1 : 0
+  count                       = var.enable_kms && var.account_type == "master" && contains(var.target_regions, "us-east-1") ? 1 : 0
   #count                       = var.enable_kms && contains(var.target_regions, "us-east-1") ? 1 : 0
   source                      = "./modules/kms"
   enable                      = var.enable_kms && contains(var.target_regions, "us-east-1")
@@ -20,36 +52,7 @@ module "kms-cloudtrail" {
   description                 = "Appzen Org cloudtrail KMS multregion and multiaccount"
   enable_key_rotation         = true
   multi_region                = true
-  policy                  = jsonencode(
-    {
-      "Statement" : [
-        {
-          "Sid": "Enable IAM User Permissions",
-          "Effect": "Allow",
-          "Principal": {
-              "AWS": "arn:aws:iam::${data.aws_caller_identity.current.id}:root"
-          },
-          "Action": "kms:*",
-          "Resource": "*"
-        },
-        {
-          "Sid": "Allow an external account to use this KMS key",
-          "Effect": "Allow",
-          "Principal": {
-              "AWS": local.non_master_account_arn
-          },
-          "Action": [
-              "kms:Encrypt",
-              "kms:Decrypt",
-              "kms:ReEncrypt*",
-              "kms:GenerateDataKey*",
-              "kms:DescribeKey"
-          ],
-          "Resource": "*"
-        }
-      ]
-    }
-  )
+  policy                      = data.aws_iam_policy_document.kms_share.json
   #replica_deletion_window_in_days =
   #replica                     = false
   #replica_policy              =
