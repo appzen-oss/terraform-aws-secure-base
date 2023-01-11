@@ -7,6 +7,7 @@
 # Regional - All accounts
 resource "aws_securityhub_account" "self" {
   count = var.enable ? 1 : 0
+  #count = var.enable && var.account_type == "master" ? 1 : 0
 }
 
 # Regional - Organization Master
@@ -17,11 +18,31 @@ resource "aws_securityhub_organization_admin_account" "self" {
 
 # Auto enable security hub in organization member accounts
 # Regional - Administrator
-resource "aws_securityhub_organization_configuration" "self" {
-  count       = var.enable && var.account_type == "administrator" ? 1 : 0
-  auto_enable = true
+#resource "aws_securityhub_organization_configuration" "self" {
+#  count       = var.enable && var.account_type == "administrator" ? 1 : 0
+#  auto_enable = true
+#}
+
+module "securityhub" {
+  count   = var.account_type == "administrator" ? 1 : 0
+  source  = "cloudposse/security-hub/aws"
+  version = "0.9.0"
+
+  enabled = var.enable && var.account_type == "administrator"
+  tags    = var.tags
+
+  #create_sns_topic = true
+  #subscribers = {
+  #  opsgenie = {
+  #    protocol               = "https"
+  #    endpoint               = "https://api.example.com/v1/"
+  #    endpoint_auto_confirms = true
+  #    raw_message_delivery   = false
+  #  }
+  #}
 }
 
+/*
 # variable aggregator_region = "us-east-1"
 # Only in aggregator region - us-east-1
 # Only in administrator account ?
@@ -75,9 +96,10 @@ resource "aws_securityhub_organization_configuration" "self" {
 
 resource "aws_securityhub_product_subscription" "self" {
   count      = var.enable ? length(var.enable_products) : 0
-  depends_on = [aws_securityhub_account.self]
+  depends_on = [aws_securityhub_account[0].self]
   product_arn = format("arn:aws:securityhub:%s:%s",
     data.aws_region.current.name,
     var.product_arns[var.enable_products[count.index]]
   )
 }
+*/

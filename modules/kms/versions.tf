@@ -6,7 +6,7 @@ terraform {
       source  = "hashicorp/aws"
       version = ">= 4.1.0"
       configuration_aliases = [
-        aws.primary_kms_key
+        aws.primary
       ]
     }
   }

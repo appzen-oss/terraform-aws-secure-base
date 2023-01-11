@@ -29,3 +29,9 @@ variable "security_administrator_account_id" {
   description = "AWS Security Administrator Account ID"
   type        = number
 }
+
+variable "tags" {
+  description = "Resource tags"
+  type        = map
+  default     = {}
+}

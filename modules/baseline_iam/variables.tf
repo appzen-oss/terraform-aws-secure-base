@@ -22,7 +22,7 @@ variable "enable" {
 
 variable "max_password_age" {
   description = "The number of days that an user password is valid."
-  default     = 0
+  default     = 90
 }
 
 variable "minimum_password_length" {
@@ -32,7 +32,7 @@ variable "minimum_password_length" {
 
 variable "password_reuse_prevention" {
   description = "The number of previous passwords that users are prevented from reusing."
-  default     = 24
+  default     = 5
 }
 
 variable "require_lowercase_characters" {

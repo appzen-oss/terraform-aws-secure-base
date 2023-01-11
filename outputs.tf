@@ -20,7 +20,7 @@ output "s3_bucket_region_name_map" {
   value       = local.s3_bucket_region_name_map
 }
 
-output "kms_arn" {
+output "cloudtrail-us-east-1" {
   description = "Map of regions and S3 names"
-  value       = module.kms-cloudtrail
+  value       = module.kms-cloudtrail-us-east-1
 }

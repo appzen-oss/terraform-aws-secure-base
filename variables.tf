@@ -10,6 +10,15 @@ variable "account_type" {
     error_message = "Must be one of: master, administrator, log, member."
   }
 }
+variable "deletion_window_in_days" {
+  description = "Duration in days after which the key is deleted after destruction of the resource"
+  type        = number
+  default     = 7
+  validation {
+    condition     = 7 <= var.deletion_window_in_days && var.deletion_window_in_days <= 30
+    error_message = "Must be between 7 and 30, inclusive."
+  }
+}
 #variable "aws_region" {
 #  description = "AWS region"
 #  type        = string
@@ -348,12 +357,6 @@ variable "cloudtrail_is_organization_trail" {
   default     = true
 }
 
-variable "cloudtrail_kms_key_arn" {
-  description = "CloudTrail trail name"
-  type        = string
-  default     = ""
-}
-
 variable "cloudtrail_name" {
   description = "CloudTrail trail name"
   type        = string
@@ -414,6 +417,11 @@ variable "config_s3_key_prefix" {
   description = "Config log S3 bucket prefix"
   default     = "config"
 }
+#variable "enable_config_recorder" {
+#  description = "Config log S3 bucket prefix"
+#  type        = bool
+#  default     = true
+#}
 
 ### -----------------------------
 ### Security Hub Settings
@@ -427,13 +435,13 @@ variable "securityhub_enable_products" {
 ### -----------------------------
 ### Organization Settings
 ### -----------------------------
-variable "org_kms_arn" {
-  description = "Organization KMS arn"
+variable "kms_key_id" {
+  description = "Organization KMS id"
   type        = string
   default     = ""
 }
 
-variable "org_administrator_account_id" {
+variable "org_master_account_id" {
   description = "AWS Organization Account ID"
   type        = number
 }

@@ -4,6 +4,7 @@
 ### -------------------
 
 ## Cloudposse output https://github.com/cloudposse/terraform-aws-kms-key#outputs
+/*
 output "alias_arn" {
   description = "KMS Alias ARN"
   value       = module.kms_key.alias_arn
@@ -21,7 +22,6 @@ output "key_id" {
   value       = module.kms_key.key_id
 }
 
-/*
 output "alias_target_key_arn" {
   description = "KMS Alias target key ARN"
   value       = one(aws_kms_alias.self.*.target_key_arn)

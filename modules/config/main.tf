@@ -1,236 +1,242 @@
+# ----------------------------------------------------------------------------------------------------------------------
+# Enable and configure AWS Config
+# ----------------------------------------------------------------------------------------------------------------------
+module "aws_config_label" {
+  source  = "cloudposse/label/null"
+  version = "0.25.0"
 
-# https://docs.aws.amazon.com/config/latest/developerguide/WhatIsConfig.html
-
-#https://www.linkedin.com/pulse/aws-config-multi-account-multi-region-data-jon-bonso/
-#https://www.contino.io/insights/aws-config-aggregator-compliance
-#https://tutorialsdojo.com/multi-account-multi-region-data-aggregation-on-aws-config/
-#https://aws.amazon.com/blogs/mt/aws-config-rdk-multi-account-and-multi-region-deployment/
-#https://aws.amazon.com/blogs/mt/aws-organizations-aws-config-and-terraform/
-
-# Deliver data to
-#   S3
-#   SNS
-
-# Regional service
-#   Setup in each account and region
-# Aggregator in administrator account to collect data from all acocunts and regions
-
-# There can only be one Recorder and one Delivery Channel in each account
-
-# https://docs.aws.amazon.com/organizations/latest/userguide/services-that-can-integrate-config.html
-# aws organizations enable-aws-service-access \
-#    --service-principal config.amazonaws.com
-### Enable
-# aws configservice put-configuration-recorder --configuration-recorder name=default,roleARN=arn:aws:iam::123456789012:role/config-role --recording-group allSupported=true,includeGlobalResourceTypes=true
-# aws configservice put-delivery-channel --delivery-channel file://deliveryChannel.json
-#{
-#    "name": "default",
-#    "s3BucketName": "config-bucket-123456789012",
-#    "snsTopicARN": "arn:aws:sns:us-east-2:123456789012:config-topic",
-#    "configSnapshotDeliveryProperties": {
-#        "deliveryFrequency": "Twelve_Hours"
-#    }
-#}
-# aws configservice start-configuration-recorder --configuration-recorder-name configRecorderName
-
-# Config rules
-#https://aws.amazon.com/blogs/devops/how-to-centrally-manage-aws-config-rules-across-multiple-aws-accounts/
-# Regional
-#resource "aws_config_organization_managed_rule"
-#  depends_on = [aws_config_configuration_recorder.config_recorder]
-
-# Conformance packs
-#https://docs.aws.amazon.com/config/latest/developerguide/conformance-packs.html
-#https://docs.aws.amazon.com/config/latest/developerguide/conformancepack-sample-templates.html
-#https://aws.amazon.com/blogs/mt/best-practices-for-aws-config-conformance-packs/
-#https://docs.aws.amazon.com/config/latest/developerguide/conformance-pack-organization-apis.html
-#https://github.com/awslabs/aws-config-rules/tree/master/aws-config-conformance-packs
-#   S3 bucket policies to allow conforms to access
-#     arn:aws:iam::*:role/aws-service-role/config-conforms.amazonaws.com/AWSServiceRoleForConfigConforms
-
-# Multi-Acccount Multi-Region Aggregation
-# https://docs.aws.amazon.com/config/latest/developerguide/aggregate-data.html
-# source account, source region -> org aggregator -> aggregator account (administrator)
-# all_regions = true
-
-# aws configservice put-configuration-aggregator --configuration-aggregator-name MyAggregator --organization-aggregation-source "{\"RoleArn\": \"Complete-Arn\",\"AllAwsRegions\": true}"
-# aws organizations enable-aws-service-access --service-principal config.amazonaws.com
-# aws organizations register-delegated-administrator --service-principal config.amazonaws.com --account-id MemberAccountID
-# NOT for org: aws configservice put-aggregation-authorization --authorized-account-id  AccountID --authorized-aws-region Region
-
-locals {
-  primary_region        = var.primary_region == "" ? "us-east-1" : var.primary_region
-  is_aggregation_region = local.primary_region == data.aws_region.current.name
-  is_administrator      = var.account_type == "administrator"
-  is_master             = var.account_type == "master"
+  attributes = ["config"]
+  context    = module.this.context
 }
 
-### ====================================================
-### Delegation
-### Regional - Organization Master
-### ====================================================
-resource "aws_organizations_delegated_administrator" "config" {
-  #count             = var.enable ? 1 : 0
-  count             = var.enable && local.is_master && var.primary_region == var.current_region ? 1 : 0
-  #count             = var.enable && local.is_master && local.is_aggregation_region ? 1 : 0
-  account_id        = var.security_administrator_account_id
-  service_principal = "config.amazonaws.com"
-}
-
-### ====================================================
-### Aggregator
-### Primary region only - Administrator
-### ====================================================
-resource "aws_iam_role" "default" {
-  count              = var.enable && var.primary_region == var.current_region ? 1 : 0
-  name               = var.org_aggregator_role_name
-  assume_role_policy = <<EOF
-{
-  "Version": "2012-10-17",
-  "Statement": [
-    {
-      "Sid": "",
-      "Effect": "Allow",
-      "Principal": {
-        "Service": "config.amazonaws.com"
-      },
-      "Action": "sts:AssumeRole"
-    }
-  ]
-}
-EOF
-}
-
-resource "aws_iam_role_policy_attachment" "organization" {
-  count      = var.enable && local.is_administrator && var.primary_region == var.current_region ? 1 : 0
-  depends_on = [aws_iam_role.default]
-  role       = aws_iam_role.default[0].name
-  policy_arn = "arn:aws:iam::aws:policy/service-role/AWSConfigRoleForOrganizations"
-}
-
-resource "aws_config_configuration_aggregator" "organization" {
-  count      = var.enable && local.is_master && var.primary_region == var.current_region ? 1 : 0
-  depends_on = [aws_iam_role_policy_attachment.organization]
-  name       = var.org_aggregator_name
-  organization_aggregation_source {
-    all_regions = true
-    role_arn    = aws_iam_role.default[0].arn
-  }
-  tags = var.tags
-}
-
-/*
-resource "aws_config_configuration_aggregator" "member" {
-  count      = var.enable && not local.is_master ? 1 : 0
-  depends_on = [aws_iam_role_policy_attachment.organization]
-  name       = var.org_aggregator_name
-  account_aggregation_source {
-    account_ids = data.aws_organizations_organization.current.accounts[*].id
-    all_regions = true
-  }
-  tags = var.tags
-}
-*/
-
-### ====================================================
-### AWS Config recorder and let it publish results and send notifications.
-### Regional
-### ====================================================
-# IAM role s3 & sns policies
-
-### SNS
-# Flesh out. Look at cloudposse/sns-topic/aws"
-#tfsec:ignore:aws-sns-enable-topic-encryption
-#resource "aws_sns_topic" "config" {
-#  #checkov:skip=CKV_AWS_26:Allow unencrypted SNS for now
-#  count             = var.enable ? 1 : 0
-#  name              = var.sns_topic_name
-#  kms_master_key_id = var.sns_topic_kms_master_key_id
-#  tags              = var.tags
-#}
-#
-#data "aws_iam_policy_document" "config-sns-policy" {
-#  count = var.enable ? 1 : 0
-#  statement {
-#    actions   = ["sns:Publish"]
-#    resources = [aws_sns_topic.config[0].arn]
-#    principals {
-#      type        = "Service"
-#      identifiers = ["config.amazonaws.com"]
-#    }
-#    condition {
-#      test     = "ArnLike"
-#      variable = "aws:SourceArn"
-#      values   = ["arn:aws:config:${data.aws_region.current.name}:${data.aws_caller_identity.current.account_id}:*"]
-#    }
-#  }
-#}
-#
-#resource "aws_sns_topic_policy" "config" {
-#  count  = var.enable ? 1 : 0
-#  arn    = aws_sns_topic.config[0].arn
-#  policy = data.aws_iam_policy_document.config-sns-policy[0].json
-#}
-
-### Config Recorder
-# Each account & region
-# Recorder IAM role
-
-# Each account & region
 resource "aws_config_configuration_recorder" "recorder" {
-  count    = var.enable ? 1 : 0
-  name     = var.recorder_name == "" ? "default" : var.recorder_name
-  role_arn = var.iam_role_arn == "" ? "arn:aws:iam::${data.aws_caller_identity.current.id}:role/${var.org_aggregator_role_name}" : var.iam_role_arn
+  count    = module.this.enabled ? 1 : 0
+  name     = module.aws_config_label.id
+  role_arn = local.create_iam_role ? module.iam_role[0].arn : local.iam_role_arn
   recording_group {
     all_supported                 = true
-    include_global_resource_types = var.include_global_resource_types
+    include_global_resource_types = local.is_global_recorder_region
   }
 }
-# or
-#   all_supported   = false
-#   resource_types  =
 
-# Each account & region
-resource "aws_config_delivery_channel" "bucket" {
-  count          = var.enable ? 1 : 0
-  name           = var.delivery_channel_name == "" ? "default" : var.delivery_channel_name
-  s3_bucket_name = var.s3_bucket_name
+resource "aws_config_delivery_channel" "channel" {
+  count          = module.this.enabled ? 1 : 0
+  name           = module.aws_config_label.id
+  s3_bucket_name = var.s3_bucket_id
   s3_key_prefix  = var.s3_key_prefix
-  #s3_kms_key_arn =
-  #sns_topic_arn = aws_sns_topic.config[0].arn
-  snapshot_delivery_properties {
-    delivery_frequency = var.delivery_frequency
-  }
-  depends_on = [aws_config_configuration_recorder.recorder[0]]
-  # aws_sns_topic.config
+  sns_topic_arn  = local.findings_notification_arn
+
+  depends_on = [
+    aws_config_configuration_recorder.recorder,
+    module.iam_role,
+  ]
 }
 
-# Each account & region
-resource "aws_config_configuration_recorder_status" "recorder" {
-  count      = var.enable ? 1 : 0
-  name       = aws_config_configuration_recorder.recorder[0].id
+resource "aws_config_configuration_recorder_status" "recorder_status" {
+  count      = module.this.enabled ? 1 : 0
+  name       = aws_config_configuration_recorder.recorder[0].name
   is_enabled = true
-  depends_on = [aws_config_delivery_channel.bucket[0]]
+  depends_on = [aws_config_delivery_channel.channel]
 }
 
-### Conformance packs and rules
-# Administrator
-#resource "aws_config_organization_conformance_pack" ""
-#  count = var.enable && var.account_type == "administrator" ? 1 : 0
-#resource "aws_config_organization_custom_rule" ""
-#  count = var.enable && var.account_type == "administrator" ? 1 : 0
-#resource "aws_config_organization_managed_rule" ""
-#  count = var.enable && var.account_type == "administrator" ? 1 : 0
+resource "aws_config_config_rule" "rules" {
+  for_each   = module.this.enabled ? var.managed_rules : {}
+  depends_on = [aws_config_configuration_recorder_status.recorder_status]
 
-#resource "aws_config_config_rule" "rules" {
-#  for_each   = module.this.enabled ? var.managed_rules : {}
-#  depends_on = [aws_config_configuration_recorder_status.recorder_status]
-#  name        = each.key
-#  description = each.value.description
-#  source {
-#    owner             = "AWS"
-#    source_identifier = each.value.identifier
-#  }
-#  input_parameters = length(each.value.input_parameters) > 0 ? jsonencode(each.value.input_parameters) : null
-#  tags             = merge(module.this.tags, each.value.tags)
-#}
+  name        = each.key
+  description = each.value.description
+
+  source {
+    owner             = "AWS"
+    source_identifier = each.value.identifier
+  }
+
+  input_parameters = length(each.value.input_parameters) > 0 ? jsonencode(each.value.input_parameters) : null
+  #maximum_execution_frequency = each.value.trigger_type
+  tags             = merge(module.this.tags, each.value.tags)
+}
+
+#-----------------------------------------------------------------------------------------------------------------------
+# Optionally create an SNS topic and subscriptions
+#-----------------------------------------------------------------------------------------------------------------------
+module "sns_topic" {
+  source  = "cloudposse/sns-topic/aws"
+  version = "0.20.1"
+  count   = module.this.enabled && local.create_sns_topic ? 1 : 0
+
+  attributes = concat(module.this.attributes, ["config"])
+  subscribers = {
+    for subscriber in var.subscribers : subscriber => {
+      protocol               = lookup(subscriber, "protocol")
+      endpoint               = lookup(subscriber, "endpoint")
+      endpoint_auto_confirms = lookup(subscriber, "endpoint_auto_confirms", false)
+      raw_message_delivery   = lookup(subscriber, "raw_message_delivery", false)
+    }
+  }
+  sqs_dlq_enabled = false
+
+  kms_master_key_id           = var.sns_encryption_key_id
+  sqs_queue_kms_master_key_id = var.sqs_queue_kms_master_key_id
+
+  tags = module.this.tags
+
+  context = module.this.context
+}
+
+module "aws_config_findings_label" {
+  source  = "cloudposse/label/null"
+  version = "0.25.0"
+
+  attributes = ["config", "findings"]
+
+  context = module.this.context
+}
+
+#-----------------------------------------------------------------------------------------------------------------------
+# Optionally create an IAM Role
+#-----------------------------------------------------------------------------------------------------------------------
+module "iam_role" {
+  count   = module.this.enabled && local.create_iam_role ? 1 : 0
+  source  = "cloudposse/iam-role/aws"
+  version = "0.15.0"
+
+  principals = {
+    "Service" = ["config.amazonaws.com"]
+  }
+
+  use_fullname = true
+
+  policy_documents = var.create_sns_topic ? [
+    data.aws_iam_policy_document.config_s3_policy[0].json,
+    data.aws_iam_policy_document.config_sns_policy[0].json
+    ] : [
+    data.aws_iam_policy_document.config_s3_policy[0].json
+  ]
+
+  policy_document_count = var.create_sns_topic ? 2 : 1
+  policy_description    = "AWS Config IAM policy"
+  role_description      = "AWS Config IAM role"
+
+  attributes = ["config"]
+
+  context = module.this.context
+}
+
+resource "aws_iam_role_policy_attachment" "config_policy_attachment" {
+  count = module.this.enabled && local.create_iam_role ? 1 : 0
+
+  role       = module.iam_role[0].name
+  policy_arn = data.aws_iam_policy.aws_config_built_in_role.arn
+}
+
+data "aws_iam_policy" "aws_config_built_in_role" {
+  arn = "arn:aws:iam::aws:policy/service-role/AWS_ConfigRole"
+}
+
+data "aws_iam_policy_document" "config_s3_policy" {
+  count = local.create_iam_role ? 1 : 0
+
+  statement {
+    sid    = "ConfigS3"
+    effect = "Allow"
+    resources = [
+      "${var.s3_bucket_arn}/*",
+      var.s3_bucket_arn
+    ]
+    actions = [
+      "s3:PutObject",
+      "s3:GetBucketAcl"
+    ]
+    condition {
+      test     = "StringLike"
+      variable = "s3:x-amz-acl"
+      values   = ["bucket-owner-full-control"]
+    }
+  }
+}
+
+data "aws_iam_policy_document" "config_sns_policy" {
+  count = local.create_iam_role && local.create_sns_topic ? 1 : 0
+
+  statement {
+    sid       = "ConfigSNS"
+    effect    = "Allow"
+    resources = [local.findings_notification_arn]
+    actions = [
+      "sns:Publish"
+    ]
+  }
+}
+
+#-----------------------------------------------------------------------------------------------------------------------
+# CONFIG AGGREGATION
+#-----------------------------------------------------------------------------------------------------------------------
+module "aws_config_aggregator_label" {
+  source  = "cloudposse/label/null"
+  version = "0.25.0"
+
+  attributes = ["config", "aggregator"]
+
+  context = module.this.context
+}
+
+resource "aws_config_configuration_aggregator" "this" {
+  # Create the aggregator in the global recorder region of the central AWS Config account. This is usually the
+  # "security" account
+  count = local.enabled && local.is_central_account && local.is_global_recorder_region ? 1 : 0
+
+  name = module.aws_config_aggregator_label.id
+  account_aggregation_source {
+    account_ids = local.child_resource_collector_accounts
+    all_regions = true
+  }
+
+  tags = module.this.tags
+}
+
+resource "aws_config_aggregate_authorization" "child" {
+  # The following only occurs when Multi-Account Multi-Region Data Aggregation is enabled by supplying
+  # `var.central_resource_collector_account` with an AWS Account ID:
+  #
+  # Authorize each region in a child account to send its data to the global_resource_collector_region of the
+  # central_resource_collector_account
+  count = local.enabled && var.central_resource_collector_account != null ? 1 : 0
+
+  account_id = var.central_resource_collector_account
+  region     = var.global_resource_collector_region
+
+  tags = module.this.tags
+}
+
+resource "aws_config_aggregate_authorization" "central" {
+  # The following only occurs when `var.central_resource_collector_account` is omitted, thus disabling
+  # Multi-Account Multi-Region Data Aggregation and only enabling Multi-Region aggregation within the same account:
+  #
+  # Authorize each region to send its data to the global_resource_collector_region
+  count = local.enabled && var.central_resource_collector_account == null ? 1 : 0
+
+  account_id = data.aws_caller_identity.this.account_id
+  region     = var.global_resource_collector_region
+
+  tags = module.this.tags
+}
+
+
+#-----------------------------------------------------------------------------------------------------------------------
+# LOCALS AND DATA SOURCES
+#-----------------------------------------------------------------------------------------------------------------------
+data "aws_region" "this" {}
+data "aws_caller_identity" "this" {}
+
+locals {
+  enabled = module.this.enabled && ! contains(var.disabled_aggregation_regions, data.aws_region.this.name)
+
+  is_central_account                = var.central_resource_collector_account == data.aws_caller_identity.this.account_id
+  is_global_recorder_region         = var.global_resource_collector_region != ""
+  child_resource_collector_accounts = var.child_resource_collector_accounts != null ? var.child_resource_collector_accounts : []
+  enable_notifications              = module.this.enabled && (var.create_sns_topic || var.findings_notification_arn != null)
+  create_sns_topic                  = module.this.enabled && var.create_sns_topic
+  findings_notification_arn         = local.enable_notifications ? (var.findings_notification_arn != null ? var.findings_notification_arn : module.sns_topic[0].sns_topic.arn) : null
+  create_iam_role                   = module.this.enabled && var.create_iam_role
+  iam_role_arn                      = "arn:aws:iam::${data.aws_caller_identity.this.account_id}:role/config"
+}

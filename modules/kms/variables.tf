@@ -12,6 +12,21 @@ variable "alias" {
   type        = string
   default     = ""
 }
+variable "account_type" {
+  description = "account type being processed: master, administrator, member"
+  type        = string
+  default     = ""
+}
+variable "org_master_account_id" {
+  description = "org_master_account_id"
+  type        = string
+  default     = ""
+}
+variable "org_primary_region" {
+  description = "org_primary_region"
+  type        = string
+  default     = ""
+}
 variable "customer_master_key_spec" {
   description = "Specifies whether the key contains a symmetric key or an asymmetric key pair and the encryption algorithms or signing algorithms that the key supports. Valid values: `SYMMETRIC_DEFAULT`, `RSA_2048`, `RSA_3072`, `RSA_4096`, `ECC_NIST_P256`, `ECC_NIST_P384`, `ECC_NIST_P521`, or `ECC_SECG_P256K1`."
   type        = string
@@ -27,7 +42,7 @@ variable "customer_master_key_spec" {
 variable "deletion_window_in_days" {
   description = "Duration in days after which the key is deleted after destruction of the resource"
   type        = number
-  default     = 30
+  default     = 7
   validation {
     condition     = 7 <= var.deletion_window_in_days && var.deletion_window_in_days <= 30
     error_message = "Must be between 7 and 30, inclusive."
@@ -81,7 +96,7 @@ variable "policy" {
 variable "replica_deletion_window_in_days" {
   description = "Duration in days after which the replica key is deleted after destruction of the resource"
   type        = number
-  default     = 30
+  default     = 7
   validation {
     condition     = 7 <= var.replica_deletion_window_in_days && var.replica_deletion_window_in_days <= 30
     error_message = "Must be between 7 and 30, inclusive."
@@ -101,6 +116,11 @@ variable "replica_policy" {
   description = "Replica KMS key policy JSON document."
   type        = string
   default     = null
+}
+variable "kms_key_id" {
+  description = "KMS key id from the manually created"
+  type        = string
+  default     = ""
 }
 variable "tags" {
   description = "Specifies object tags key and value. This applies to all resources created by this module."

@@ -1,13 +1,26 @@
 # Manage KMS keys
 
 locals {
-  non_master_account_arn  = data.aws_organizations_organization.current.non_master_accounts == null ? [] : [ for id in data.aws_organizations_organization.current.non_master_accounts[*].id : "arn:aws:iam::${id}:root" ]
+  non_master_account_arn  = data.aws_organizations_organization.current.non_master_accounts == null ? [] : [ for id in data.aws_organizations_organization.current.non_master_accounts[*].id : "arn:aws:kms::${id}:key/*" ]
+}
+
+provider "aws" {
+  alias   = "use1"
+  region  = "us-east-1"
+}
+provider "aws" {
+  alias   = "use2"
+  region  = "us-east-2"
+}
+provider "aws" {
+  alias   = "euw1"
+  region  = "eu-west-1"
 }
 
 data "aws_iam_policy_document" "kms_share" {
   statement {
     actions     = ["kms:*"]
-    sid         = "Enable IAM User Permissions"
+    sid         = "200"
     effect      = "Allow"
     principals  { 
       type        = "AWS"
@@ -16,7 +29,7 @@ data "aws_iam_policy_document" "kms_share" {
     resources   = ["*"]
   }
   statement {
-    sid         = "Allow an external account to use this KMS key"
+    sid         = "210"
     effect      = "Allow"
     principals  {
       type        = "AWS"
@@ -33,6 +46,65 @@ data "aws_iam_policy_document" "kms_share" {
   }
 }
 
+data "aws_iam_policy_document" "iam_kms" {
+  statement {
+    actions     = ["kms:*"]
+    sid         = "200"
+    effect      = "Allow"
+    resources   = ["arn:aws:kms::${data.aws_caller_identity.current.id}:key/*"]
+    #resources   = ["*"]
+  }
+  statement {
+    sid         = "210"
+    effect      = "Allow"
+    actions     = [
+      "kms:Encrypt",
+      "kms:Decrypt",
+      "kms:ReEncrypt*",
+      "kms:GenerateDataKey*",
+      "kms:DescribeKey"
+    ]
+    #resources   = ["*"]
+    resources   = local.non_master_account_arn
+  }
+}
+
+resource "aws_iam_policy" "policy" {
+  count = var.enable_kms && var.account_type != "master" ? 1 : 0
+  name        = "org_kms-policy"
+  description = "ORG kms policy 3"
+  policy      = data.aws_iam_policy_document.iam_kms.json
+}
+
+resource "aws_iam_role" "org_kms_role" {
+  count = var.enable_kms && var.account_type != "master" ? 1 : 0
+  name = "org_kms-iam-role-for-grant"
+
+  assume_role_policy = <<EOF
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Action": "sts:AssumeRole",
+      "Principal": {
+        "Service": "cloudtrail.amazonaws.com"
+      },
+      "Effect": "Allow",
+      "Sid": "100"
+    }
+  ]
+}
+EOF
+}
+
+resource "aws_kms_grant" "org_kms" {
+  count = var.enable_kms && var.kms_key_id != "" && var.account_type != "master" ? 1 : 0
+  name              = "org_kms-grant"
+  key_id            = var.kms_key_id
+  grantee_principal = aws_iam_role.org_kms_role[0].arn
+  operations        = ["Encrypt", "Decrypt", "GenerateDataKey"]
+}
+
 # CloudTrail
 #   key in region where S3 bucket is. Can be cross account
 # EBS
@@ -41,25 +113,75 @@ data "aws_iam_policy_document" "kms_share" {
 #
 # SNS
 
-module "kms-cloudtrail" {
+module "kms-cloudtrail-us-east-1" {
   count                       = var.enable_kms && var.account_type == "master" && contains(var.target_regions, "us-east-1") ? 1 : 0
   #count                       = var.enable_kms && contains(var.target_regions, "us-east-1") ? 1 : 0
   source                      = "./modules/kms"
   enable                      = var.enable_kms && contains(var.target_regions, "us-east-1")
-  alias                       = "alias/org_cloudtrail"
+  account_type                = var.account_type
+  alias                       = "org_cloudtrail"
   name                        = "org_cloudtrail"
-  deletion_window_in_days     = 7
+  deletion_window_in_days     = var.deletion_window_in_days
   description                 = "Appzen Org cloudtrail KMS multregion and multiaccount"
   enable_key_rotation         = true
   multi_region                = true
   policy                      = data.aws_iam_policy_document.kms_share.json
-  #replica_deletion_window_in_days =
-  #replica                     = false
-  #replica_policy              =
+  org_master_account_id       = var.org_master_account_id
+  org_primary_region          = var.org_primary_region
+  replica_deletion_window_in_days = 7
+  replica                     = false
+  replica_policy              = ""
   tags                        = var.tags
   providers = {
-    aws                 = aws.us-east-1
-    aws.primary_kms_key = aws.us-east-1
+    aws                 = aws.use1
+    aws.primary         = aws.use1
+  }
+}
+
+module "kms-cloudtrail-eu-west-1" {
+  count                       = var.enable_kms && var.account_type == "master" && contains(var.target_regions, "eu-west-1") ? 1 : 0
+  #count                       = var.enable_kms && contains(var.target_regions, "eu-west-1") ? 1 : 0
+  source                      = "./modules/kms"
+  enable                      = var.enable_kms && contains(var.target_regions, "eu-west-1")
+  alias                       = "org_cloudtrail"
+  name                        = "org_cloudtrail"
+  deletion_window_in_days     = var.deletion_window_in_days
+  description                 = "Appzen Org cloudtrail KMS multregion and multiaccount"
+  enable_key_rotation         = true
+  multi_region                = true
+  policy                      = data.aws_iam_policy_document.kms_share.json
+  org_master_account_id       = var.org_master_account_id
+  org_primary_region          = var.org_primary_region
+  replica_deletion_window_in_days = var.deletion_window_in_days
+  replica                     = true
+  replica_policy              = ""
+  tags                        = var.tags
+  providers = {
+    aws                 = aws.euw1
+    aws.primary         = aws.use1
+  }
+}
+
+module "kms-cloudtrail-us-east-2" {
+  count                           = var.enable_kms && var.account_type == "master" && contains(var.target_regions, "us-east-2") ? 1 : 0
+  source                          = "./modules/kms"
+  enable                          = var.enable_kms && contains(var.target_regions, "us-east-2")
+  alias                           = "org_cloudtrail"
+  name                            = "org_cloudtrail"
+  deletion_window_in_days         = var.deletion_window_in_days
+  description                     = "Appzen Org cloudtrail KMS multregion and multiaccount"
+  enable_key_rotation             = true
+  multi_region                    = true
+  policy                          = data.aws_iam_policy_document.kms_share.json
+  org_master_account_id       = var.org_master_account_id
+  org_primary_region          = var.org_primary_region
+  replica_deletion_window_in_days = var.deletion_window_in_days
+  replica                         = true
+  replica_policy                  = ""
+  tags                            = var.tags
+  providers = {
+    aws         = aws.use2
+    aws.primary = aws.use1
   }
 }
 
