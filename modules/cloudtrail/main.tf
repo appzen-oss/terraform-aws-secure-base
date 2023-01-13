@@ -26,20 +26,21 @@
 #tfsec:ignore:aws-cloudtrail-enable-at-rest-encryption
 module "cloudtrail" {
   #ts:skip=AC_AWS_0448 Multi Region is enabled. Not work with Org?
-  source  = "appzen-oss/cloudtrail/aws"
+  #source  = "appzen-oss/cloudtrail/aws"
+  source  = "../../../terraform-aws-cloudtrail"
   #version = "0.22.0"
 
-  name                          = var.name
-  enable_log_file_validation    = var.enable_log_file_validation
-  include_global_service_events = var.include_global_service_events
-  is_multi_region_trail         = var.is_multi_region_trail
-  is_organization_trail         = var.is_organization_trail
-  insight_selector              = var.insight_selector
-  enable_logging                = var.enable_logging
-  kms_key_arn                   = var.kms_key_arn
-  s3_bucket_name                = var.s3_bucket_name
-  s3_key_prefix                 = var.s3_key_prefix
-  tags                          = var.tags
+  name                              = var.name
+  enable_log_file_validation        = var.enable_log_file_validation
+  include_global_service_events     = var.include_global_service_events
+  is_multi_region_trail             = var.is_multi_region_trail
+  is_organization_trail             = var.is_organization_trail
+  insight_selector                  = var.insight_selector
+  enable_logging                    = var.enable_logging
+  kms_key_arn                       = var.kms_key_arn
+  s3_bucket_name                    = var.s3_bucket_name
+  s3_key_prefix                     = var.s3_key_prefix
+  tags                              = var.tags
 }
 
 # Pass tags

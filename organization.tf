@@ -40,13 +40,25 @@ locals {
       var.enable_firewall_manager ? "fms.amazonaws.com" : "",
       var.enable_firewall_manager ? "ram.amazonaws.com" : "",
       var.enable_guardduty ? "guardduty.amazonaws.com" : "",
+      var.enable_guardduty ? "malware-protection.guardduty.amazonaws.com" : "",
       var.enable_iam_access_analyzer ? "access-analyzer.amazonaws.com" : "",
       var.enable_securityhub ? "securityhub.amazonaws.com" : "",
     ]
   )))
+  remove_nondelegated_principals = toset(compact(
+    [
+      "aws-artifact-account-sync.amazonaws.com",
+      "health.amazonaws.com",
+      "ram.amazonaws.com",
+      "malware-protection.guardduty.amazonaws.com",
+      "servicequotas.amazonaws.com",
+      "tagpolicies.tag.amazonaws.com",
+      "wellarchitected.amazonaws.com",
+    ]
+  ))
   # Final principals set with items added and removed
-  aws_service_access_principals = setsubtract(
-  local.access_principals, local.remove_access_principals)
+  aws_service_access_principals = setsubtract(local.access_principals, local.remove_access_principals)
+  aws_delegated_principals      = var.account_type == "master" ? toset(setsubtract(local.aws_service_access_principals, local.remove_nondelegated_principals)) : toset([])
   #var.enable_artifact         ? "" : "",
 
   #enabled_policy_types = toset(compact([
@@ -62,4 +74,16 @@ resource "aws_organizations_organization" "self" {
   aws_service_access_principals = local.aws_service_access_principals
   enabled_policy_types          = data.aws_organizations_organization.self.enabled_policy_types
   feature_set                   = "ALL"
+}
+
+resource "aws_servicecatalog_organizations_access" "self" {
+  count                         = var.account_type == "master" ? 1 : 0
+  enabled = "true"
+}
+
+resource "aws_organizations_delegated_administrator" "self" {
+  for_each          = local.aws_delegated_principals
+  account_id        = var.security_administrator_account_id
+  service_principal = each.key
+  depends_on        = [aws_servicecatalog_organizations_access.self,aws_organizations_organization.self]
 }
