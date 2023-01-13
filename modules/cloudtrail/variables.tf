@@ -11,6 +11,12 @@ variable "enable_logging" {
   default     = true
 }
 
+variable "cloud_watch_logs" {
+  description = "Enable cloudwatch logging for the trail"
+  type        = bool
+  default     = true
+}
+
 variable "include_global_service_events" {
   description = "Specifies whether the trail is publishing events from global services such as IAM to the log files"
   type        = bool

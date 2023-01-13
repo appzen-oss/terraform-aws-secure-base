@@ -12,6 +12,7 @@ module "cloudtrail" {
   name                              = var.cloudtrail_name
   enable_log_file_validation        = var.cloudtrail_enable_log_file_validation
   enable_logging                    = var.cloudtrail_enable_logging
+  cloud_watch_logs                  = var.cloudtrail_enable_cloudwatch_logs
   include_global_service_events     = var.cloudtrail_include_global_service_events
   insight_selector                  = var.cloudtrail_insight_selector
   is_multi_region_trail             = var.cloudtrail_is_multi_region_trail
