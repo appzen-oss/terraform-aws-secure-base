@@ -11,7 +11,7 @@
 # --------------------------------------------------------------------------------------------------
 module "baseline_iam" {
   source = "./modules/baseline_iam"
-  count  = var.enable_iam_baseline ? 1 : 0
+  count  = var.enable_iam_baseline && contains(var.target_regions, "us-east-1") ? 1 : 0
   enable = var.enable_iam_baseline
   #support_iam_role_name           = var.iam_support_iam_role_name
   #support_iam_role_policy_name    = var.iam_support_iam_role_policy_name
@@ -25,7 +25,7 @@ module "baseline_iam" {
   allow_users_to_change_password = var.iam_allow_users_to_change_password
   max_password_age               = var.iam_max_password_age
   create_password_policy         = var.iam_create_password_policy
-  #create_support_role             = var.iam_create_support_role
+  create_support_role             = var.iam_create_support_role
   tags = var.tags
 }
 

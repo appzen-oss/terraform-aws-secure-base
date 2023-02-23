@@ -1,3 +1,6 @@
+locals {
+}
+
 # --------------------------------------------------------------------------------------------------
 # Password Policy
 # --------------------------------------------------------------------------------------------------
@@ -17,9 +20,10 @@ resource "aws_iam_account_password_policy" "default" {
   max_password_age               = var.max_password_age
 }
 
-## --------------------------------------------------------------------------------------------------
-## Support Role
-## --------------------------------------------------------------------------------------------------
+# --------------------------------------------------------------------------------------------------
+# Support Role - https://us-east-1.console.aws.amazon.com/securityhub/home?region=us-east-1#/standards/cis-aws-foundations-benchmark-1.4.0/1.17
+#                https://docs.aws.amazon.com/securityhub/latest/userguide/securityhub-cis-controls.html#cis-1.20-remediation
+# --------------------------------------------------------------------------------------------------
 #data "aws_iam_policy_document" "support_assume_policy" {
 #  statement {
 #    principals {
@@ -29,16 +33,16 @@ resource "aws_iam_account_password_policy" "default" {
 #    actions = ["sts:AssumeRole"]
 #  }
 #}
-#
-#resource "aws_iam_role" "support" {
-#  count              = var.enable && var.create_support_role ? 1 : 0
-#  name               = var.support_iam_role_name
-#  assume_role_policy = data.aws_iam_policy_document.support_assume_policy.json
-#  tags = var.tags
-#}
-#
-#resource "aws_iam_role_policy_attachment" "support_policy" {
-#  count      = var.enable && var.create_support_role ? 1 : 0
-#  role       = aws_iam_role.support[0].id
-#  policy_arn = "arn:aws:iam::aws:policy/AWSSupportAccess"
-#}
+
+resource "aws_iam_role" "support" {
+  count              = var.enable && var.create_support_role ? 1 : 0
+  name               = var.support_iam_role_name
+  assume_role_policy = data.aws_iam_policy_document.support_assume_policy.json
+  tags = var.tags
+}
+
+resource "aws_iam_role_policy_attachment" "support_policy" {
+  count      = var.enable && var.create_support_role ? 1 : 0
+  role       = aws_iam_role.support[0].id
+  policy_arn = "arn:aws:iam::aws:policy/AWSSupportAccess"
+}

@@ -48,6 +48,7 @@ locals {
   remove_nondelegated_principals = toset(compact(
     [
       "aws-artifact-account-sync.amazonaws.com",
+      "guardduty.amazonaws.com",
       "health.amazonaws.com",
       "ram.amazonaws.com",
       "malware-protection.guardduty.amazonaws.com",

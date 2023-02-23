@@ -42,10 +42,12 @@
 # Regional - Organization Master
 # This will create a detector, if one doesn't exist
 # Run terraform for administrator account first
-resource "aws_guardduty_organization_admin_account" "self" {
-  count            = var.enable && var.account_type == "master" ? 1 : 0
-  admin_account_id = var.security_administrator_account_id
-}
+#resource "aws_guardduty_organization_admin_account" "self" {
+#  count            = var.enable && var.account_type == "master" ? 1 : 0
+#  #count            = var.enable && var.account_type == "master" && data.aws_region.current.name == var.org_primary_region ? 1 : 0
+#  #count            = 0
+#  admin_account_id = var.security_administrator_account_id
+#}
 
 ## Run in admin account
 
@@ -63,8 +65,7 @@ resource "aws_guardduty_organization_admin_account" "self" {
 # Add detector only on delegated admin
 resource "aws_guardduty_detector" "self" {
   #count                        = var.enable && var.account_type == "administrator" ? 1 : 0
-  count                        = var.enable && var.account_type == "administrator" ? 1 : 0
-  enable                       = true
+  enable                       = var.enable && var.account_type == "administrator"
   finding_publishing_frequency = var.finding_publishing_frequency
   datasources {
     s3_logs {
@@ -94,10 +95,12 @@ resource "aws_guardduty_detector" "self" {
 
 # Security account to manage all members
 # Regional - Administrator
+## Unsure why this ERROR
+## Error: error reading GuardDuty Organization Configuration (): BadRequestException: The request is rejected because an invalid or out-of-range value is specified as an input parameter.
 resource "aws_guardduty_organization_configuration" "self" {
   count       = var.enable && var.account_type == "administrator" ? 1 : 0
   auto_enable = true
-  detector_id = aws_guardduty_detector.self[0].id
+  detector_id = aws_guardduty_detector.self.id
   datasources {
     s3_logs {
       auto_enable = true
@@ -116,6 +119,19 @@ resource "aws_guardduty_organization_configuration" "self" {
     }
   }
 }
+
+#resource "aws_guardduty_detector" "member" {
+#  provider  = aws.dev
+#  enable    = true
+#}
+
+#resource "aws_guardduty_member" "member" {
+#  for_each                    = toset(var.org_active_account_id)
+#  account_id                  = each.key
+#  detector_id                 = aws_guardduty_detector.self.id
+#  email                       = "wes@appzen.com"
+#  disable_email_notification  = true
+#}
 
 #dynamic "datasources" {
 #  for_each = var.datasources

@@ -9,10 +9,11 @@ module "aws_config_label" {
   context    = module.this.context
 }
 
+# If recorder already exists: aws configservice delete-configuration-recorder --configuration-recorder-name default --profile <AWS_PROFILE> --region <AWS_REGION>
 resource "aws_config_configuration_recorder" "recorder" {
-  count    = module.this.enabled ? 1 : 0
-  name     = module.aws_config_label.id
-  role_arn = local.create_iam_role ? module.iam_role[0].arn : local.iam_role_arn
+  count          = module.this.enabled ? 1 : 0
+  name           = module.aws_config_label.id
+  role_arn       = local.create_iam_role ? module.iam_role[0].arn : local.iam_role_arn
   recording_group {
     all_supported                 = true
     include_global_resource_types = local.is_global_recorder_region
@@ -105,6 +106,7 @@ module "iam_role" {
   }
 
   use_fullname = true
+  #name         = "Config-Recorder"
 
   policy_documents = var.create_sns_topic ? [
     data.aws_iam_policy_document.config_s3_policy[0].json,

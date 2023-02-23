@@ -38,9 +38,17 @@ variable "security_administrator_account_id" {
 variable "tags" {
   description = "Specifies object tags key and value. This applies to all resources created by this module."
   type        = map(any)
-  default = {
-    "Environment" = "infra"
-    "Product"     = "security"
-    "Terraform"   = true
-  }
+  default = {}
+}
+
+variable "org_primary_region" {
+  description = "Organization primary region"
+  type        = string
+  default     = "us-east-1"
+}
+
+variable "org_active_account_id" {
+  description = "Organization accounts"
+  type        = list
+  default     = []
 }

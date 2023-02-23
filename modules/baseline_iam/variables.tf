@@ -5,20 +5,21 @@ variable "enable" {
   default     = true
 }
 
-#variable "support_iam_role_name" {
-#  description = "The name of the the support role."
-#  default     = "IAM-Support"
-#}
-#
-#variable "support_iam_role_policy_name" {
-#  description = "The name of the support role policy."
-#  default     = "IAM-Support-Role"
-#}
-#
-#variable "support_iam_role_principal_arns" {
-#  type        = list(any)
-#  description = "List of ARNs of the IAM principal elements by which the support role could be assumed."
-#}
+variable "support_iam_role_name" {
+  description = "The name of the the support role."
+  default     = "secbase-support"
+}
+
+variable "support_iam_role_policy_name" {
+  description = "The name of the support role policy."
+  default     = "secbase-support-policy"
+}
+
+variable "support_iam_role_principal_arns" {
+  type        = list(any)
+  description = "List of ARNs of the IAM principal elements by which the support role could be assumed."
+  default     = []
+}
 
 variable "max_password_age" {
   description = "The number of days that an user password is valid."
@@ -66,11 +67,11 @@ variable "create_password_policy" {
   default     = true
 }
 
-#variable "create_support_role" {
-#  type        = bool
-#  description = "Define if the support role should be created."
-#  default     = false
-#}
+variable "create_support_role" {
+  type        = bool
+  description = "Define if the support role should be created."
+  default     = true
+}
 
 variable "tags" {
   description = "Specifies object tags key and value. This applies to all resources created by this module."

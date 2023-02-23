@@ -24,3 +24,15 @@ output "cloudtrail-us-east-1" {
   description = "Map of regions and S3 names"
   value       = module.kms-cloudtrail-us-east-1
 }
+
+output "region_enabled" {
+  value       = local.region_enabled
+}
+
+output "region_filter" {
+  value       = local.region_filter
+}
+
+output "region_list" {
+  value       = local.region_list
+}

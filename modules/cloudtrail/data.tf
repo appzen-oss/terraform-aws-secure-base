@@ -2,7 +2,7 @@ data "aws_caller_identity" "current" {}
 data "aws_iam_account_alias" "current" {}
 data "aws_region" "current" {}
 data "aws_organizations_organization" "current" {}
-
+/*
 data "aws_iam_policy_document" "kms" {
   # Allow root users full management access to key
   statement {
@@ -61,3 +61,4 @@ data "aws_iam_policy_document" "kms" {
     }
   }
 }
+*/

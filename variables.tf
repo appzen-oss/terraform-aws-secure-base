@@ -10,6 +10,19 @@ variable "account_type" {
     error_message = "Must be one of: master, administrator, log, member."
   }
 }
+
+variable "region_list" {
+  description = "Overriding list of region to apply at"
+  type        = list
+  default     = []
+}
+
+variable "region_exclude" {
+  description = "Remove these regions from the data.aws_region.enabled.names list"
+  type        = list
+  default     = []
+}
+
 variable "deletion_window_in_days" {
   description = "Duration in days after which the key is deleted after destruction of the resource"
   type        = number
@@ -29,6 +42,11 @@ variable "deletion_window_in_days" {
 #  type        = bool
 #  default     = false
 #}
+variable "enable_alarm" {
+  description = "Enable AWS CloudTrail service"
+  type        = bool
+  default     = true
+}
 variable "enable_cloudtrail" {
   description = "Enable AWS CloudTrail service"
   type        = bool
@@ -104,12 +122,7 @@ variable "enable_securityhub" {
 variable "tags" {
   description = "Specifies object tags key and value. This applies to all resources created by this module."
   type        = map(any)
-  default = {
-    "Environment" = "infra"
-    "Product"     = "security"
-    "Team"        = "devops"
-    "Terraform"   = true
-  }
+  default     = {}
 }
 
 variable "target_regions" {
@@ -190,11 +203,11 @@ variable "iam_create_password_policy" {
 #  default     = true
 #}
 
-#variable "iam_create_support_role" {
-#  type        = bool
-#  description = "Define if the support role should be created."
-#  default     = true
-#}
+variable "iam_create_support_role" {
+  type        = bool
+  description = "Define if the support role should be created."
+  default     = true
+}
 
 #variable "iam_master_iam_role_name" {
 #  description = "The name of the IAM Master role."
@@ -452,6 +465,11 @@ variable "org_master_account_id" {
   type        = number
 }
 
+variable "org_active_account_id" {
+  description = "AWS Organization Account ID"
+  type        = list
+}
+
 variable "security_administrator_account_id" {
   description = "AWS Security Administrator Account ID"
   type        = number
@@ -491,3 +509,26 @@ variable "org_primary_region" {
 #  type        = bool
 #  default     = true
 #}
+
+### -----------------------------
+### Alarm
+### -----------------------------
+variable "sns_report" {
+  description = "AWS sns Topic name"
+  type        = string
+}
+
+variable "sns_info" {
+  description = "AWS sns Topic name"
+  type        = string
+}
+
+variable "sns_warn" {
+  description = "AWS sns Topic name"
+  type        = string
+}
+
+variable "sns_error" {
+  description = "AWS sns Topic name"
+  type        = string
+}

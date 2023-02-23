@@ -8,6 +8,12 @@ variable "s3_bucket_arn" {
   type        = string
 }
 
+variable "enable_config_recorder" {
+  description = "Flag to indicate whether a config recorder should be created"
+  type    = bool
+  default = true
+}
+
 variable "create_sns_topic" {
   description = <<-DOC
     Flag to indicate whether an SNS topic should be created for notifications
