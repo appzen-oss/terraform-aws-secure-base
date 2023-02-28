@@ -26,9 +26,9 @@
 # aws guardduty create-sample-findings
 # aws guardduty create-threat-intel-set
 
-#locals {
-#  guardduty_disabled  = data.aws_guardduty_detector.current.status != "ENABLED"
-#}
+locals {
+  org_account_active  = [ for k in var.org_account_active :  k if k.Status == "ACTIVE" ]
+}
 
 # for each region
 # detector_id=$(aws guardduty list-detectors --region ${aws_region} --query DetectorIds | jq -r .[0])
@@ -125,14 +125,6 @@ resource "aws_guardduty_organization_configuration" "self" {
 #  enable    = true
 #}
 
-#resource "aws_guardduty_member" "member" {
-#  for_each                    = toset(var.org_active_account_id)
-#  account_id                  = each.key
-#  detector_id                 = aws_guardduty_detector.self.id
-#  email                       = "wes@appzen.com"
-#  disable_email_notification  = true
-#}
-
 #dynamic "datasources" {
 #  for_each = var.datasources
 #  content {
@@ -177,14 +169,15 @@ resource "aws_guardduty_organization_configuration" "self" {
 #  name        = "MyIPSet"
 #}
 
-#resource "aws_guardduty_member" "member" {
-#  account_id         = aws_guardduty_detector.member.account_id
-#  detector_id        = aws_guardduty_detector.primary.id
-#  email              = "required@example.com"
-#  invite             = true
-#  invitation_message = "please accept guardduty invitation"
-#}
-#
+/*
+resource "aws_guardduty_member" "member" {
+  for_each           = var.account_type == "administrator" ? { for record in local.org_account_active : record.Id => record } : {}
+  account_id         = each.key
+  detector_id        = aws_guardduty_detector.self.id
+  email              = each.value.Email
+}
+*/
+
 #resource "aws_guardduty_invite_accepter" "member" {
 #  depends_on = [aws_guardduty_member.member]
 #  #provider   = aws.member

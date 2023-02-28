@@ -35,7 +35,7 @@ module "baseline_iam" {
 module "baseline_s3" {
   source                  = "./modules/baseline_s3"
   count                   = var.enable_s3_baseline ? 1 : 0
-  enable                  = var.enable_s3_baseline
+  enable                  = var.enable_s3_baseline 
   block_public_acls       = var.s3_block_public_acls
   block_public_policy     = var.s3_block_public_policy
   ignore_public_acls      = var.s3_ignore_public_acls

@@ -36,3 +36,7 @@ output "region_filter" {
 output "region_list" {
   value       = local.region_list
 }
+
+output "account_current" {
+  value       = data.aws_organizations_organization.current
+}

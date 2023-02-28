@@ -436,6 +436,10 @@ variable "config_s3_key_prefix" {
   description = "Config log S3 bucket prefix"
   default     = "config"
 }
+variable "sns_encryption_key_id" {
+  description = "Config log S3 bucket prefix"
+  default     = "alias/aws/sns"
+}
 #variable "enable_config_recorder" {
 #  description = "Config log S3 bucket prefix"
 #  type        = bool
@@ -465,9 +469,10 @@ variable "org_master_account_id" {
   type        = number
 }
 
-variable "org_active_account_id" {
+variable "org_account_active" {
   description = "AWS Organization Account ID"
   type        = list
+  default     = []
 }
 
 variable "security_administrator_account_id" {

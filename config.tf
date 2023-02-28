@@ -7,6 +7,7 @@ locals {
   iam_role_arn  = "arn:aws:iam::${data.aws_caller_identity.current.account_id}:role/config"
 }
 
+## Commented due to - Error: missing provider module.secure-base.provider["registry.terraform.io/hashicorp/aws"].af-south-1
 #module "config_af-south-1" {
 #  count                 = contains(local.region_list, "af-south-1") ? 1 : 0
 #  source                = "cloudposse/config/aws"
@@ -30,6 +31,8 @@ locals {
 #  s3_bucket_id                      = var.log_s3_bucket
 #  s3_bucket_arn                     = "arn:aws:s3:::${var.log_s3_bucket}"
 #  s3_key_prefix                     = var.config_s3_key_prefix
+#  sns_encryption_key_id             = var.sns_encryption_key_id
+#  tags                              = var.tags
 #  global_resource_collector_region  = var.org_primary_region
 #}
 
@@ -56,6 +59,8 @@ locals {
 #  s3_bucket_id                      = var.log_s3_bucket
 #  s3_bucket_arn                     = "arn:aws:s3:::${var.log_s3_bucket}"
 #  s3_key_prefix                     = var.config_s3_key_prefix
+#  sns_encryption_key_id             = var.sns_encryption_key_id
+#  tags                              = var.tags
 #  global_resource_collector_region  = var.org_primary_region
 #}
 
@@ -82,6 +87,8 @@ module "config_ap-northeast-1" {
   s3_bucket_id                      = var.log_s3_bucket
   s3_bucket_arn                     = "arn:aws:s3:::${var.log_s3_bucket}"
   s3_key_prefix                     = var.config_s3_key_prefix
+  sns_encryption_key_id             = var.sns_encryption_key_id
+  tags                              = var.tags
   global_resource_collector_region  = var.org_primary_region
 }
 
@@ -108,6 +115,8 @@ module "config_ap-northeast-2" {
   s3_bucket_id                      = var.log_s3_bucket
   s3_bucket_arn                     = "arn:aws:s3:::${var.log_s3_bucket}"
   s3_key_prefix                     = var.config_s3_key_prefix
+  sns_encryption_key_id             = var.sns_encryption_key_id
+  tags                              = var.tags
   global_resource_collector_region  = var.org_primary_region
 }
 
@@ -134,6 +143,8 @@ module "config_ap-northeast-2" {
 #  s3_bucket_id                      = var.log_s3_bucket
 #  s3_bucket_arn                     = "arn:aws:s3:::${var.log_s3_bucket}"
 #  s3_key_prefix                     = var.config_s3_key_prefix
+#  sns_encryption_key_id             = var.sns_encryption_key_id
+#  tags                              = var.tags
 #  global_resource_collector_region  = var.org_primary_region
 #}
 
@@ -160,6 +171,8 @@ module "config_ap-south-1" {
   s3_bucket_id                      = var.log_s3_bucket
   s3_bucket_arn                     = "arn:aws:s3:::${var.log_s3_bucket}"
   s3_key_prefix                     = var.config_s3_key_prefix
+  sns_encryption_key_id             = var.sns_encryption_key_id
+  tags                              = var.tags
   global_resource_collector_region  = var.org_primary_region
 }
 
@@ -186,6 +199,8 @@ module "config_ap-south-1" {
 #  s3_bucket_id                      = var.log_s3_bucket
 #  s3_bucket_arn                     = "arn:aws:s3:::${var.log_s3_bucket}"
 #  s3_key_prefix                     = var.config_s3_key_prefix
+#  sns_encryption_key_id             = var.sns_encryption_key_id
+#  tags                              = var.tags
 #  global_resource_collector_region  = var.org_primary_region
 #}
 
@@ -212,6 +227,8 @@ module "config_ap-southeast-1" {
   s3_bucket_id                      = var.log_s3_bucket
   s3_bucket_arn                     = "arn:aws:s3:::${var.log_s3_bucket}"
   s3_key_prefix                     = var.config_s3_key_prefix
+  sns_encryption_key_id             = var.sns_encryption_key_id
+  tags                              = var.tags
   global_resource_collector_region  = var.org_primary_region
 }
 
@@ -238,6 +255,8 @@ module "config_ap-southeast-2" {
   s3_bucket_id                      = var.log_s3_bucket
   s3_bucket_arn                     = "arn:aws:s3:::${var.log_s3_bucket}"
   s3_key_prefix                     = var.config_s3_key_prefix
+  sns_encryption_key_id             = var.sns_encryption_key_id
+  tags                              = var.tags
   global_resource_collector_region  = var.org_primary_region
 }
 
@@ -264,6 +283,8 @@ module "config_ap-southeast-2" {
 #  s3_bucket_id                      = var.log_s3_bucket
 #  s3_bucket_arn                     = "arn:aws:s3:::${var.log_s3_bucket}"
 #  s3_key_prefix                     = var.config_s3_key_prefix
+#  sns_encryption_key_id             = var.sns_encryption_key_id
+#  tags                              = var.tags
 #  global_resource_collector_region  = var.org_primary_region
 #}
 
@@ -290,6 +311,8 @@ module "config_ap-southeast-2" {
 #  s3_bucket_id                      = var.log_s3_bucket
 #  s3_bucket_arn                     = "arn:aws:s3:::${var.log_s3_bucket}"
 #  s3_key_prefix                     = var.config_s3_key_prefix
+#  sns_encryption_key_id             = var.sns_encryption_key_id
+#  tags                              = var.tags
 #  global_resource_collector_region  = var.org_primary_region
 #}
 
@@ -316,6 +339,8 @@ module "config_ca-central-1" {
   s3_bucket_id                      = var.log_s3_bucket
   s3_bucket_arn                     = "arn:aws:s3:::${var.log_s3_bucket}"
   s3_key_prefix                     = var.config_s3_key_prefix
+  sns_encryption_key_id             = var.sns_encryption_key_id
+  tags                              = var.tags
   global_resource_collector_region  = var.org_primary_region
 }
 
@@ -342,6 +367,8 @@ module "config_eu-central-1" {
   s3_bucket_id                      = var.log_s3_bucket
   s3_bucket_arn                     = "arn:aws:s3:::${var.log_s3_bucket}"
   s3_key_prefix                     = var.config_s3_key_prefix
+  sns_encryption_key_id             = var.sns_encryption_key_id
+  tags                              = var.tags
   global_resource_collector_region  = var.org_primary_region
 }
 
@@ -368,6 +395,8 @@ module "config_eu-central-1" {
 #  s3_bucket_id                      = var.log_s3_bucket
 #  s3_bucket_arn                     = "arn:aws:s3:::${var.log_s3_bucket}"
 #  s3_key_prefix                     = var.config_s3_key_prefix
+#  sns_encryption_key_id             = var.sns_encryption_key_id
+#  tags                              = var.tags
 #  global_resource_collector_region  = var.org_primary_region
 #}
 
@@ -394,6 +423,8 @@ module "config_eu-north-1" {
   s3_bucket_id                      = var.log_s3_bucket
   s3_bucket_arn                     = "arn:aws:s3:::${var.log_s3_bucket}"
   s3_key_prefix                     = var.config_s3_key_prefix
+  sns_encryption_key_id             = var.sns_encryption_key_id
+  tags                              = var.tags
   global_resource_collector_region  = var.org_primary_region
 }
 
@@ -420,6 +451,8 @@ module "config_eu-north-1" {
 #  s3_bucket_id                      = var.log_s3_bucket
 #  s3_bucket_arn                     = "arn:aws:s3:::${var.log_s3_bucket}"
 #  s3_key_prefix                     = var.config_s3_key_prefix
+#  sns_encryption_key_id             = var.sns_encryption_key_id
+#  tags                              = var.tags
 #  global_resource_collector_region  = var.org_primary_region
 #}
 
@@ -446,6 +479,8 @@ module "config_eu-north-1" {
 #  s3_bucket_id                      = var.log_s3_bucket
 #  s3_bucket_arn                     = "arn:aws:s3:::${var.log_s3_bucket}"
 #  s3_key_prefix                     = var.config_s3_key_prefix
+#  sns_encryption_key_id             = var.sns_encryption_key_id
+#  tags                              = var.tags
 #  global_resource_collector_region  = var.org_primary_region
 #}
 
@@ -472,6 +507,8 @@ module "config_eu-west-1" {
   s3_bucket_id                      = var.log_s3_bucket
   s3_bucket_arn                     = "arn:aws:s3:::${var.log_s3_bucket}"
   s3_key_prefix                     = var.config_s3_key_prefix
+  sns_encryption_key_id             = var.sns_encryption_key_id
+  tags                              = var.tags
   global_resource_collector_region  = var.org_primary_region
 }
 
@@ -498,6 +535,8 @@ module "config_eu-west-2" {
   s3_bucket_id                      = var.log_s3_bucket
   s3_bucket_arn                     = "arn:aws:s3:::${var.log_s3_bucket}"
   s3_key_prefix                     = var.config_s3_key_prefix
+  sns_encryption_key_id             = var.sns_encryption_key_id
+  tags                              = var.tags
   global_resource_collector_region  = var.org_primary_region
 }
 
@@ -524,6 +563,8 @@ module "config_eu-west-3" {
   s3_bucket_id                      = var.log_s3_bucket
   s3_bucket_arn                     = "arn:aws:s3:::${var.log_s3_bucket}"
   s3_key_prefix                     = var.config_s3_key_prefix
+  sns_encryption_key_id             = var.sns_encryption_key_id
+  tags                              = var.tags
   global_resource_collector_region  = var.org_primary_region
 }
 
@@ -550,6 +591,8 @@ module "config_eu-west-3" {
 #  s3_bucket_id                      = var.log_s3_bucket
 #  s3_bucket_arn                     = "arn:aws:s3:::${var.log_s3_bucket}"
 #  s3_key_prefix                     = var.config_s3_key_prefix
+#  sns_encryption_key_id             = var.sns_encryption_key_id
+#  tags                              = var.tags
 #  global_resource_collector_region  = var.org_primary_region
 #}
 
@@ -576,6 +619,8 @@ module "config_eu-west-3" {
 #  s3_bucket_id                      = var.log_s3_bucket
 #  s3_bucket_arn                     = "arn:aws:s3:::${var.log_s3_bucket}"
 #  s3_key_prefix                     = var.config_s3_key_prefix
+#  sns_encryption_key_id             = var.sns_encryption_key_id
+#  tags                              = var.tags
 #  global_resource_collector_region  = var.org_primary_region
 #}
 
@@ -602,6 +647,8 @@ module "config_sa-east-1" {
   s3_bucket_id                      = var.log_s3_bucket
   s3_bucket_arn                     = "arn:aws:s3:::${var.log_s3_bucket}"
   s3_key_prefix                     = var.config_s3_key_prefix
+  sns_encryption_key_id             = var.sns_encryption_key_id
+  tags                              = var.tags
   global_resource_collector_region  = var.org_primary_region
 }
 
@@ -628,6 +675,8 @@ module "config_us-east-1" {
   s3_bucket_id                      = var.log_s3_bucket
   s3_bucket_arn                     = "arn:aws:s3:::${var.log_s3_bucket}"
   s3_key_prefix                     = var.config_s3_key_prefix
+  sns_encryption_key_id             = var.sns_encryption_key_id
+  tags                              = var.tags
   global_resource_collector_region  = var.org_primary_region
 }
 
@@ -654,6 +703,8 @@ module "config_us-east-2" {
   s3_bucket_id                      = var.log_s3_bucket
   s3_bucket_arn                     = "arn:aws:s3:::${var.log_s3_bucket}"
   s3_key_prefix                     = var.config_s3_key_prefix
+  sns_encryption_key_id             = var.sns_encryption_key_id
+  tags                              = var.tags
   global_resource_collector_region  = var.org_primary_region
 }
 
@@ -680,6 +731,8 @@ module "config_us-west-1" {
   s3_bucket_id                      = var.log_s3_bucket
   s3_bucket_arn                     = "arn:aws:s3:::${var.log_s3_bucket}"
   s3_key_prefix                     = var.config_s3_key_prefix
+  sns_encryption_key_id             = var.sns_encryption_key_id
+  tags                              = var.tags
   global_resource_collector_region  = var.org_primary_region
 }
 
@@ -706,6 +759,8 @@ module "config_us-west-2" {
   s3_bucket_id                      = var.log_s3_bucket
   s3_bucket_arn                     = "arn:aws:s3:::${var.log_s3_bucket}"
   s3_key_prefix                     = var.config_s3_key_prefix
+  sns_encryption_key_id             = var.sns_encryption_key_id
+  tags                              = var.tags
   global_resource_collector_region  = var.org_primary_region
 }
 
