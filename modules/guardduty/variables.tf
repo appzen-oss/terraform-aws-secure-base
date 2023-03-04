@@ -47,8 +47,8 @@ variable "org_primary_region" {
   default     = "us-east-1"
 }
 
-variable "org_account_active" {
+variable "org_account_active_map" {
   description = "Organization accounts"
-  type        = list
-  default     = []
+  type        = map
+  default     = {}
 }

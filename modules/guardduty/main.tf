@@ -27,7 +27,6 @@
 # aws guardduty create-threat-intel-set
 
 locals {
-  org_account_active  = [ for k in var.org_account_active :  k if k.Status == "ACTIVE" ]
 }
 
 # for each region
@@ -64,8 +63,8 @@ locals {
 
 # Add detector only on delegated admin
 resource "aws_guardduty_detector" "self" {
-  #count                        = var.enable && var.account_type == "administrator" ? 1 : 0
-  enable                       = var.enable && var.account_type == "administrator"
+  count                        = var.enable && var.account_type == "administrator" ? 1 : 0
+  enable                       = var.enable
   finding_publishing_frequency = var.finding_publishing_frequency
   datasources {
     s3_logs {
@@ -84,23 +83,12 @@ resource "aws_guardduty_detector" "self" {
       }
     }
   }
-  #datasources {
-  #  s3_logs {
-  #    enable = true
-  #  }
-  #}
   tags = var.tags
 }
-
-
-# Security account to manage all members
-# Regional - Administrator
-## Unsure why this ERROR
-## Error: error reading GuardDuty Organization Configuration (): BadRequestException: The request is rejected because an invalid or out-of-range value is specified as an input parameter.
 resource "aws_guardduty_organization_configuration" "self" {
-  count       = var.enable && var.account_type == "administrator" ? 1 : 0
-  auto_enable = true
-  detector_id = aws_guardduty_detector.self.id
+  count                        = var.enable && var.account_type == "administrator" ? 1 : 0
+  auto_enable                  = var.enable
+  detector_id                 = aws_guardduty_detector.self[0].id
   datasources {
     s3_logs {
       auto_enable = true
@@ -119,6 +107,62 @@ resource "aws_guardduty_organization_configuration" "self" {
     }
   }
 }
+
+
+## Below adding member fails with the below error.  Loops of destroy and create.  After create it throw the below error
+/*
+ Error: Provider produced inconsistent result after apply
+│ 
+│ When applying changes to module.secure-base.module.guardduty-us-east-1[0].aws_guardduty_member.member["206178260240"], provider
+│ "provider[\"registry.terraform.io/hashicorp/aws\"].us-east-1" produced an unexpected new value: Root resource was present, but now absent.
+│ 
+│ This is a bug in the provider, which should be reported in the provider's own issue tracker.
+*/
+resource "aws_guardduty_member" "member" {
+  for_each                    = var.enable && var.account_type == "administrator" ? { for k, v in var.org_account_active_map : tostring(k) => tostring(v.Email) if tonumber(k) != var.security_administrator_account_id } : {}
+  account_id                  = tostring(each.key)
+  detector_id                 = aws_guardduty_detector.self[0].id
+  email                       = each.value
+  invite                      = false
+  disable_email_notification  = true
+}
+#resource "aws_guardduty_invite_accepter" "member" {
+#  depends_on = [aws_guardduty_member.member]
+#  provider   = aws.member
+#
+#  detector_id       = aws_guardduty_detector.member.id
+#  master_account_id = aws_guardduty_detector.primary.account_id
+#}
+
+/*
+# Security account to manage all members
+# Regional - Administrator
+## Think members need to exist before this can apply successfully
+## Error: error reading GuardDuty Organization Configuration (): BadRequestException: The request is rejected because an invalid or out-of-range value is specified as an input parameter.
+resource "aws_guardduty_organization_configuration" "self" {
+  count       = var.enable && var.account_type == "administrator" ? 1 : 0
+  auto_enable = true
+  detector_id = aws_guardduty_detector.self[0].id
+  datasources {
+    s3_logs {
+      auto_enable = true
+    }
+    kubernetes {
+      audit_logs {
+        enable = true
+      }
+    }
+    malware_protection {
+      scan_ec2_instance_with_findings {
+        ebs_volumes {
+          auto_enable = true
+        }
+      }
+    }
+  }
+  depends_on  = [aws_guardduty_member.member]
+}
+*/
 
 #resource "aws_guardduty_detector" "member" {
 #  provider  = aws.dev

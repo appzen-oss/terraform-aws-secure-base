@@ -475,6 +475,12 @@ variable "org_account_active" {
   default     = []
 }
 
+variable "org_account_active_map" {
+  description = "AWS Organization by Account ID"
+  type        = map
+  default     = {}
+}
+
 variable "security_administrator_account_id" {
   description = "AWS Security Administrator Account ID"
   type        = number

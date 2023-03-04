@@ -96,6 +96,8 @@ module "config_ap-northeast-2" {
   count                 = contains(local.region_list, "ap-northeast-2") ? 1 : 0
   source                = "cloudposse/config/aws"
   version               = "0.17.0"
+  central_resource_collector_account  = var.security_administrator_account_id
+  child_resource_collector_accounts   = [ for k in var.org_account_active :  k.Id ]
   create_sns_topic      = true
   create_iam_role       = var.org_primary_region == "ap-northeast-2"
   iam_role_arn          = var.org_primary_region == "ap-northeast-2" ? "" : local.iam_role_arn
@@ -152,6 +154,8 @@ module "config_ap-south-1" {
   count                 = contains(local.region_list, "ap-south-1") ? 1 : 0
   source                = "cloudposse/config/aws"
   version               = "0.17.0"
+  central_resource_collector_account  = var.security_administrator_account_id
+  child_resource_collector_accounts   = [ for k in var.org_account_active :  k.Id ]
   create_sns_topic      = true
   create_iam_role       = var.org_primary_region == "ap-south-1"
   iam_role_arn          = var.org_primary_region == "ap-south-1" ? "" : local.iam_role_arn
@@ -208,6 +212,8 @@ module "config_ap-southeast-1" {
   count                 = contains(local.region_list, "ap-southeast-1") ? 1 : 0
   source                = "cloudposse/config/aws"
   version               = "0.17.0"
+  central_resource_collector_account  = var.security_administrator_account_id
+  child_resource_collector_accounts   = [ for k in var.org_account_active :  k.Id ]
   create_sns_topic      = true
   create_iam_role       = var.org_primary_region == "ap-southeast-1"
   iam_role_arn          = var.org_primary_region == "ap-southeast-1" ? "" : local.iam_role_arn
@@ -236,6 +242,8 @@ module "config_ap-southeast-2" {
   count                 = contains(local.region_list, "ap-southeast-2") ? 1 : 0
   source                = "cloudposse/config/aws"
   version               = "0.17.0"
+  central_resource_collector_account  = var.security_administrator_account_id
+  child_resource_collector_accounts   = [ for k in var.org_account_active :  k.Id ]
   create_sns_topic      = true
   create_iam_role       = var.org_primary_region == "ap-southeast-2"
   iam_role_arn          = var.org_primary_region == "ap-southeast-2" ? "" : local.iam_role_arn
@@ -320,6 +328,8 @@ module "config_ca-central-1" {
   count                 = contains(local.region_list, "ca-central-1") ? 1 : 0
   source                = "cloudposse/config/aws"
   version               = "0.17.0"
+  central_resource_collector_account  = var.security_administrator_account_id
+  child_resource_collector_accounts   = [ for k in var.org_account_active :  k.Id ]
   create_sns_topic      = true
   create_iam_role       = var.org_primary_region == "ca-central-1"
   iam_role_arn          = var.org_primary_region == "ca-central-1" ? "" : local.iam_role_arn
@@ -348,6 +358,8 @@ module "config_eu-central-1" {
   count                 = contains(local.region_list, "eu-central-1") ? 1 : 0
   source                = "cloudposse/config/aws"
   version               = "0.17.0"
+  central_resource_collector_account  = var.security_administrator_account_id
+  child_resource_collector_accounts   = [ for k in var.org_account_active :  k.Id ]
   create_sns_topic      = true
   create_iam_role       = var.org_primary_region == "eu-central-1"
   iam_role_arn          = var.org_primary_region == "eu-central-1" ? "" : local.iam_role_arn
@@ -404,6 +416,8 @@ module "config_eu-north-1" {
   count                 = contains(local.region_list, "eu-north-1") ? 1 : 0
   source                = "cloudposse/config/aws"
   version               = "0.17.0"
+  central_resource_collector_account  = var.security_administrator_account_id
+  child_resource_collector_accounts   = [ for k in var.org_account_active :  k.Id ]
   create_sns_topic      = true
   create_iam_role       = var.org_primary_region == "eu-north-1"
   iam_role_arn          = var.org_primary_region == "eu-north-1" ? "" : local.iam_role_arn
@@ -488,6 +502,8 @@ module "config_eu-west-1" {
   count                 = contains(local.region_list, "eu-west-1") ? 1 : 0
   source                = "cloudposse/config/aws"
   version               = "0.17.0"
+  central_resource_collector_account  = var.security_administrator_account_id
+  child_resource_collector_accounts   = [ for k in var.org_account_active :  k.Id ]
   create_sns_topic      = true
   create_iam_role       = var.org_primary_region == "eu-west-1"
   iam_role_arn          = var.org_primary_region == "eu-west-1" ? "" : local.iam_role_arn
@@ -516,6 +532,8 @@ module "config_eu-west-2" {
   count                 = contains(local.region_list, "eu-west-2") ? 1 : 0
   source                = "cloudposse/config/aws"
   version               = "0.17.0"
+  central_resource_collector_account  = var.security_administrator_account_id
+  child_resource_collector_accounts   = [ for k in var.org_account_active :  k.Id ]
   create_sns_topic      = true
   create_iam_role       = var.org_primary_region == "eu-west-2"
   iam_role_arn          = var.org_primary_region == "eu-west-2" ? "" : local.iam_role_arn
@@ -544,6 +562,8 @@ module "config_eu-west-3" {
   count                 = contains(local.region_list, "eu-west-3") ? 1 : 0
   source                = "cloudposse/config/aws"
   version               = "0.17.0"
+  central_resource_collector_account  = var.security_administrator_account_id
+  child_resource_collector_accounts   = [ for k in var.org_account_active :  k.Id ]
   create_sns_topic      = true
   create_iam_role       = var.org_primary_region == "eu-west-3"
   iam_role_arn          = var.org_primary_region == "eu-west-3" ? "" : local.iam_role_arn
@@ -628,6 +648,8 @@ module "config_sa-east-1" {
   count                 = contains(local.region_list, "sa-east-1") ? 1 : 0
   source                = "cloudposse/config/aws"
   version               = "0.17.0"
+  central_resource_collector_account  = var.security_administrator_account_id
+  child_resource_collector_accounts   = [ for k in var.org_account_active :  k.Id ]
   create_sns_topic      = true
   create_iam_role       = var.org_primary_region == "sa-east-1"
   iam_role_arn          = var.org_primary_region == "sa-east-1" ? "" : local.iam_role_arn
@@ -656,6 +678,8 @@ module "config_us-east-1" {
   count                 = contains(local.region_list, "us-east-1") ? 1 : 0
   source                = "cloudposse/config/aws"
   version               = "0.17.0"
+  central_resource_collector_account  = var.security_administrator_account_id
+  child_resource_collector_accounts   = [ for k in var.org_account_active :  k.Id ]
   create_sns_topic      = true
   create_iam_role       = var.org_primary_region == "us-east-1"
   iam_role_arn          = var.org_primary_region == "us-east-1" ? "" : local.iam_role_arn
@@ -684,6 +708,8 @@ module "config_us-east-2" {
   count                 = contains(local.region_list, "us-east-2") ? 1 : 0
   source                = "cloudposse/config/aws"
   version               = "0.17.0"
+  central_resource_collector_account  = var.security_administrator_account_id
+  child_resource_collector_accounts   = [ for k in var.org_account_active :  k.Id ]
   create_sns_topic      = true
   create_iam_role       = var.org_primary_region == "us-east-2"
   iam_role_arn          = var.org_primary_region == "us-east-2" ? "" : local.iam_role_arn
@@ -712,6 +738,8 @@ module "config_us-west-1" {
   count                 = contains(local.region_list, "us-west-1") ? 1 : 0
   source                = "cloudposse/config/aws"
   version               = "0.17.0"
+  central_resource_collector_account  = var.security_administrator_account_id
+  child_resource_collector_accounts   = [ for k in var.org_account_active :  k.Id ]
   create_sns_topic      = true
   create_iam_role       = var.org_primary_region == "us-west-1"
   iam_role_arn          = var.org_primary_region == "us-west-1" ? "" : local.iam_role_arn
@@ -740,6 +768,8 @@ module "config_us-west-2" {
   count                 = contains(local.region_list, "us-west-2") ? 1 : 0
   source                = "cloudposse/config/aws"
   version               = "0.17.0"
+  central_resource_collector_account  = var.security_administrator_account_id
+  child_resource_collector_accounts   = [ for k in var.org_account_active :  k.Id ]
   create_sns_topic      = true
   create_iam_role       = var.org_primary_region == "us-west-2"
   iam_role_arn          = var.org_primary_region == "us-west-2" ? "" : local.iam_role_arn
