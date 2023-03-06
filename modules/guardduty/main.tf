@@ -123,7 +123,7 @@ resource "aws_guardduty_member" "member" {
   account_id                  = tostring(each.key)
   detector_id                 = aws_guardduty_detector.self[0].id
   email                       = each.value
-  invite                      = false
+  invite                      = true
   disable_email_notification  = true
 }
 #resource "aws_guardduty_invite_accepter" "member" {
