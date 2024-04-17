@@ -79,6 +79,7 @@ module "config_ap-northeast-1" {
   source                = "cloudposse/config/aws"
   version               = "0.17.0"
   central_resource_collector_account  = var.security_administrator_account_id
+  child_resource_collector_accounts   = [ for k in var.org_account_active :  k.Id ]
   create_sns_topic      = true
   create_iam_role       = var.org_primary_region == "ap-northeast-1"
   iam_role_arn          = var.org_primary_region == "ap-northeast-1" ? "" : local.iam_role_arn
