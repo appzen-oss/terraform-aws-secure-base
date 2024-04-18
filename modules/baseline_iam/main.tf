@@ -20,6 +20,7 @@ resource "aws_iam_account_password_policy" "default" {
   max_password_age               = var.max_password_age
 }
 
+# Moved to data.tf file
 # --------------------------------------------------------------------------------------------------
 # Support Role - https://us-east-1.console.aws.amazon.com/securityhub/home?region=us-east-1#/standards/cis-aws-foundations-benchmark-1.4.0/1.17
 #                https://docs.aws.amazon.com/securityhub/latest/userguide/securityhub-cis-controls.html#cis-1.20-remediation
